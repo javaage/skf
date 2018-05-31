@@ -1,0 +1,20 @@
+2018-05-31 11:13:16,605,Starting Application v0.0.1-SNAPSHOT on BAC1600981-PC with PID 5368 (E:\project\SKF\document\skf\management-0.0.1-SNAPSHOT.jar started by P9030576 in E:\project\SKF\document\skf)
+2018-05-31 11:13:16,609,Running with Spring Boot v1.5.2.RELEASE, Spring v4.3.7.RELEASE
+2018-05-31 11:13:16,610,The following profiles are active: prod
+2018-05-31 11:13:21,359,Started Application in 5.23 seconds (JVM running for 6.177)
+2018-05-31 11:13:34,366,Starting Application v0.0.1-SNAPSHOT on BAC1600981-PC with PID 6280 (E:\project\SKF\document\skf\management-0.0.1-SNAPSHOT.jar started by P9030576 in E:\project\SKF\document\skf)
+2018-05-31 11:13:34,379,Running with Spring Boot v1.5.2.RELEASE, Spring v4.3.7.RELEASE
+2018-05-31 11:13:34,380,The following profiles are active: prod
+2018-05-31 11:13:38,841,Started Application in 4.958 seconds (JVM running for 5.774)
+2018-05-31 11:14:05,365,
+### Error querying database.  Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'skf_web.skf_oem' doesn't exist
+### The error may exist in com/skf/management/mapper/OEMModelMapper.xml
+### The error may involve com.skf.management.mapper.OEMModelMapper.selectByExample-Inline
+### The error occurred while setting parameters
+### SQL: select                      OEM_CODE, OEM_NAME, OEM_COUNTRY, OEM_STATE, OEM_CITY, OEM_ADDRESS, OEM_URL, OEM_INTRODUCTION         from skf_oem
+### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'skf_web.skf_oem' doesn't exist
+; bad SQL grammar []; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'skf_web.skf_oem' doesn't exist
+2018-05-31 11:17:44,579,Starting Application v0.0.1-SNAPSHOT on BAC1600981-PC with PID 8824 (E:\project\SKF\document\skf\management-0.0.1-SNAPSHOT.jar started by P9030576 in E:\project\SKF\document\skf)
+2018-05-31 11:17:44,583,Running with Spring Boot v1.5.2.RELEASE, Spring v4.3.7.RELEASE
+2018-05-31 11:17:44,583,The following profiles are active: prod
+2018-05-31 11:17:49,412,Started Application in 5.262 seconds (JVM running for 6.048)

@@ -24,19 +24,19 @@
 		</table>
 		
 		<table schema="public" tableName="SKF_RL" domainObjectName="RoleModel">
-			<generatedKey column="rl_id" sqlStatement="select replace(uuid(), '-', '')" identity="false" />  
-			<columnOverride column="rl_id" property="id" />
-			<columnOverride column="rl_name" property="name" />
+			<generatedKey column="RL_ID" sqlStatement="select replace(uuid(), '-', '')" identity="false" />  
+			<columnOverride column="RL_ID" property="id" />
+			<columnOverride column="RL_NAME" property="name" />
 		</table>
 		
 		<table schema="public" tableName="SKF_USR_CSTM" domainObjectName="UserCustomerModel">
-			<columnOverride column="usr_code" property="userCode" />
-			<columnOverride column="cstm_code" property="customerCode" />
+			<columnOverride column="USR_CODE" property="userCode" />
+			<columnOverride column="CSTM_CODE" property="customerCode" />
 		</table>
 		
 		<table schema="public" tableName="SKF_USR_OEM" domainObjectName="UserOEMModel">
-			<columnOverride column="usr_code" property="userCode" />
-			<columnOverride column="oem_code" property="oemCode" />
+			<columnOverride column="USR_CODE" property="userCode" />
+			<columnOverride column="OEM_CODE" property="oemCode" />
 		</table>
 		
 		<table schema="public" tableName="SKF_CSTM" domainObjectName="CustomerModel">
@@ -97,9 +97,9 @@
 		</table>
 
 		<table schema="public" tableName="SKF_CPCT" domainObjectName="ComponentTypeModel">
-			<generatedKey column="cpct_id" sqlStatement="select replace(uuid(), '-', '')" identity="false" />  
-			<columnOverride column="cpct_id" property="id" />
-			<columnOverride column="cpct_name" property="name" />
+			<generatedKey column="CPCT_ID" sqlStatement="select replace(uuid(), '-', '')" identity="false" />  
+			<columnOverride column="CPCT_ID" property="id" />
+			<columnOverride column="CPCT_NAME" property="name" />
 		</table>
 
 		<table schema="public" tableName="SKF_CMPT" domainObjectName="ComponentModel">

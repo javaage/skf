@@ -1,0 +1,26 @@
+{
+  "spectrogramTab": [
+    {
+      "id": 0,
+      "name": "BPFI内圈频率",
+      "value": 5
+    },
+    {
+      "id": 1,
+      "name": "BPFO外圈频率",
+      "value": 10
+    },
+    {
+      "id": 2,
+      "name": "BSF滚动体频率",
+      "value": 20
+    },
+    {
+      "id": 3,
+      "name": "FIF保持架频率",
+      "value": 50
+    }
+  ],
+  "xAxisMax": 100,
+  "yAxisData": [10, 15, 6, 4, 2, 5, 6, 7, 4, 15, 6, 4, 2, 5, 6, 7, 4, 15, 6, 4, 2]
+}

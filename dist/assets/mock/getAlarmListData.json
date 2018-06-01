@@ -1,0 +1,35 @@
+{
+  "totalPageNum": 10,
+  "tableList": [
+    {
+      "id": "id0",
+      "deviceName": "NS5311 Compressor",
+      "sensorName": "AX00000Sensor",
+      "partName": "SKF Bearing 6338 M/C3",
+      "type": "1",
+      "status": "A",
+      "score": "73",
+      "alarmTime": "5/16/2018, 1:07:39 PM"
+    },
+    {
+      "id": "id1",
+      "deviceName": "NS5311 Compressor",
+      "sensorName": "AX00000Sensor",
+      "partName": "SKF Bearing 6338 M/C3",
+      "type": "2",
+      "status": "B",
+      "score": "71",
+      "alarmTime": "5/16/2018, 1:07:39 PM"
+    },
+    {
+      "id": "id2",
+      "deviceName": "NS5311 Compressor",
+      "sensorName": "AX00000Sensor",
+      "partName": "SKF Bearing 6338 M/C3",
+      "type": "2",
+      "status": "C",
+      "score": "71",
+      "alarmTime": "5/16/2018, 1:07:39 PM"
+    }
+  ]
+}

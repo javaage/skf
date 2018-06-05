@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.skf.management.mapper.UserCustomerModelMapper;
@@ -15,6 +16,7 @@ import com.skf.management.service.UserCustomerService;
 public class UserCustomerServiceImpl implements UserCustomerService {
 
 	@Autowired
+	@Qualifier("mysqlsession")
 	private SqlSession sqlSession;
 	
 	@Override

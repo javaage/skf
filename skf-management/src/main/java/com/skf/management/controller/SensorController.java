@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +72,8 @@ public class SensorController {
 		try {
 			sensorService.add(model);
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK);
+		} catch (DuplicateKeyException e){
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_DUPLICATE_KEY_EXCEPTION, Constant.HTTP_MSG_DUPLICATE_KEY_EXCEPTION);
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());
@@ -107,6 +110,8 @@ public class SensorController {
 			} else {
 				map = ResultHelper.createResult(Constant.HTTP_TYPE_CODE_NOT_EXISTS, Constant.HTTP_MSG_ERROR_NOT_EXISTS);
 			}
+		} catch (DuplicateKeyException e){
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_DUPLICATE_KEY_EXCEPTION, Constant.HTTP_MSG_DUPLICATE_KEY_EXCEPTION);
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());

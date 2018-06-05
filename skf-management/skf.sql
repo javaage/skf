@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     5/22/2018 2:52:54 PM                         */
+/* Created on:     6/5/2018 3:36:02 PM                          */
 /*==============================================================*/
 
 
@@ -55,7 +55,8 @@ create table SKF_ALRM
    ALRM_DEAL_COMMENT    varchar(1024),
    ALRM_REOPEN_COMMENT  varchar(1024),
    primary key (ALRM_ID)
-);
+)
+charset = UTF8;
 
 alter table SKF_ALRM comment 'bp alarm';
 
@@ -74,8 +75,9 @@ create table SKF_BRNG
    BRNG_FTF             float,
    BRNG_IMAGE_CODE      varchar(50) not null,
    primary key (BRNG_CODE),
-   key AK_KEY_2 (BRNG_MODEL_NUMBER)
-);
+   unique key AK_KEY_BRNG_MODEL_NUMBER (BRNG_MODEL_NUMBER)
+)
+charset = UTF8;
 
 alter table SKF_BRNG comment 'bearing';
 
@@ -93,8 +95,12 @@ create table SKF_CMPT
    CMPT_SPEED_TYPE      int not null,
    CMPT_SCHEMA_NAME     varchar(50),
    CMPT_NODE_ID         int(11),
+   CMPT_TOTAL_VALUE     float not null,
+   CMPT_DEFECT_RANGE    float,
+   CMPT_DEFECT_TYPE     int not null,
    primary key (CMPT_CODE)
-);
+)
+charset = UTF8;
 
 alter table SKF_CMPT comment 'component';
 
@@ -106,7 +112,8 @@ create table SKF_CPCT
    CPCT_ID              int not null auto_increment,
    CPCT_NAME            varchar(50) not null,
    primary key (CPCT_ID)
-);
+)
+charset = UTF8;
 
 alter table SKF_CPCT comment 'component catelog';
 
@@ -125,8 +132,10 @@ create table SKF_CSTM
    CSTM_URL             varchar(50),
    CSTM_INTRODUCTION    varchar(50),
    CSTM_IMG             mediumblob not null,
-   primary key (CSTM_CODE)
-);
+   primary key (CSTM_CODE),
+   unique key AK_KEY_CSTM_NAME (CSTM_NAME)
+)
+charset = UTF8;
 
 alter table SKF_CSTM comment 'custom';
 
@@ -142,8 +151,9 @@ create table SKF_GEAR
    GEAR_MESHING_FREQUENCY float,
    GEAR_IMAGE_CODE      varchar(50) not null,
    primary key (GEAR_CODE),
-   key AK_KEY_2 (GEAR_MODEL_NUMBER)
-);
+   unique key AK_KEY_GEAR_MODEL_NUMBER (GEAR_MODEL_NUMBER)
+)
+charset = UTF8;
 
 alter table SKF_GEAR comment 'gear';
 
@@ -156,7 +166,8 @@ create table SKF_IMG
    IMG_CPCT_ID          int not null,
    IMG_DATA             mediumblob not null,
    primary key (IMG_CODE)
-);
+)
+charset = UTF8;
 
 /*==============================================================*/
 /* Table: SKF_OEM                                               */
@@ -172,8 +183,10 @@ create table SKF_OEM
    OEM_URL              varchar(50),
    OEM_INTRODUCTION     varchar(1024),
    OEM_IMG              mediumblob not null,
-   primary key (OEM_CODE)
-);
+   primary key (OEM_CODE),
+   unique key AK_KEY_OEM_NAME (OEM_NAME)
+)
+charset = UTF8;
 
 alter table SKF_OEM comment 'oem';
 
@@ -187,8 +200,10 @@ create table SKF_QPMT
    QPMT_NAME            VARCHAR(50) not null,
    QPMT_SETUP_DATE      date not null,
    QPMT_CSTM_CODE       varchar(50) not null,
-   primary key (QPMT_CODE)
-);
+   primary key (QPMT_CODE),
+   unique key AK_KEY_QPMT_NAME (QPMT_NAME)
+)
+charset = UTF8;
 
 alter table SKF_QPMT comment 'equipment';
 
@@ -202,8 +217,10 @@ create table SKF_QPMT_TYPE
    QPTP_TYPE_NAME       VARCHAR(50) not null,
    QPTP_TYPE_DESC       VARCHAR(50),
    QPTP_TYPE_IMG        mediumblob not null,
-   primary key (QPTP_TYPE_CODE)
-);
+   primary key (QPTP_TYPE_CODE),
+   unique key AK_KEY_QPTP_TYPE_NAME (QPTP_TYPE_NAME)
+)
+charset = UTF8;
 
 alter table SKF_QPMT_TYPE comment 'equipment type';
 
@@ -215,7 +232,8 @@ create table SKF_RL
    RL_ID                int not null,
    RL_NAME              varchar(50) not null,
    primary key (RL_ID)
-);
+)
+charset = UTF8;
 
 alter table SKF_RL comment 'role';
 
@@ -232,8 +250,10 @@ create table SKF_SNSR
    SNSR_POS_Y           float not null,
    SNSR_SCHEMA_NAME     varchar(50) not null,
    SNSR_NODE_ID         int(11) not null,
-   primary key (SNSR_CODE)
-);
+   primary key (SNSR_CODE),
+   unique key AK_KEY_SNSR_NAME (SNSR_NAME)
+)
+charset = UTF8;
 
 alter table SKF_SNSR comment 'sensor';
 
@@ -271,7 +291,8 @@ create table SKF_TRND
    TRND_SCORE           float,
    TRND_CONDITION       varchar(1024),
    primary key (TRND_ID)
-);
+)
+charset = UTF8;
 
 alter table SKF_TRND comment 'bp trend';
 
@@ -291,9 +312,11 @@ create table SKF_USR
    USR_IMG              mediumblob not null,
    USR_LOGIN_TIME       timestamp,
    primary key (USR_CODE),
-   unique key AK_usr_phone (USR_PHONE),
-   unique key AK_usr_email (USR_EMAIL)
-);
+   unique key AK_KEY_USR_NAME (USR_NAME),
+   unique key AK_USR_PHONE (USR_PHONE),
+   unique key AK_USR_EMAIL (USR_EMAIL)
+)
+charset = UTF8;
 
 alter table SKF_USR comment 'user';
 
@@ -305,7 +328,8 @@ create table SKF_USR_CSTM
    USR_CODE             varchar(50) not null,
    CSTM_CODE            varchar(50) not null,
    primary key (USR_CODE, CSTM_CODE)
-);
+)
+charset = UTF8;
 
 /*==============================================================*/
 /* Table: SKF_USR_OEM                                           */
@@ -315,7 +339,8 @@ create table SKF_USR_OEM
    USR_CODE             varchar(50) not null,
    OEM_CODE             VARCHAR(50) not null,
    primary key (USR_CODE, OEM_CODE)
-);
+)
+charset = UTF8;
 
 alter table SKF_BRNG add constraint FK_REFERENCE_BRNG_IMAGE_CODE foreign key (BRNG_IMAGE_CODE)
       references SKF_IMG (IMG_CODE) on delete restrict on update restrict;

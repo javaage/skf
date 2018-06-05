@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.skf.management.mapper.UserOEMModelMapper;
@@ -15,6 +16,7 @@ import com.skf.management.service.UserOEMService;
 public class UserOEMServiceImpl implements UserOEMService {
 
 	@Autowired
+	@Qualifier("mysqlsession")
 	private SqlSession sqlSession;
 	
 	@Override

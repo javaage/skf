@@ -76,17 +76,4 @@ public interface BearingModelMapper {
 	 */
 	int updateByPrimaryKey(BearingModel record);
 
-	/**
-	 * list page
-	 * @param example
-	 * @return
-	 */
-	List<Object> listPage(Map<String,Integer> map);
-	
-	/**
-	 * list page count
-	 * @param example
-	 * @return
-	 */
-	int listPageCount();
 }

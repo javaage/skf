@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.skf.management.entity.GearEntity;
 import com.skf.management.entity.Page;
 import com.skf.management.mapper.BearingModelMapper;
+import com.skf.management.mapper.GearMapper;
 import com.skf.management.mapper.GearModelMapper;
 import com.skf.management.model.BearingModel;
 import com.skf.management.model.BearingModelExample;
@@ -36,12 +37,12 @@ public class GearServiceImpl implements GearService {
 
 	@Override
 	public Page listPage(int currentPage) {
-		GearModelMapper gearModelMapper = sqlSession
-				.getMapper(GearModelMapper.class);
+		GearMapper gearMapper = sqlSession
+				.getMapper(GearMapper.class);
 
 		Page page = new Page();
 
-		int record = gearModelMapper.listPageCount();
+		int record = gearMapper.listPageCount();
 
 		page.setAllRowsAmount(record);
 		page.setCurrentPage(currentPage);
@@ -51,7 +52,7 @@ public class GearServiceImpl implements GearService {
 		parmMap.put("stratRow", page.getCurrentPageStartRow());
 		parmMap.put("endRow", page.getCurrentPageEndRow());
 
-		List<Object> data = gearModelMapper.listPage(parmMap);
+		List<Object> data = gearMapper.listPage(parmMap);
 
 		page.setItems(data);
 

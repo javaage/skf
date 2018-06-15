@@ -348,53 +348,5 @@
       BRNG_IMAGE_CODE = #{imageCode,jdbcType=VARCHAR}
     where BRNG_CODE = #{code,jdbcType=VARCHAR}
   </update>
-  <select id="listPage" parameterType="map" resultMap="ResultPage">  
-        select 
-        	sb.BRNG_CODE,
-			simg.IMG_DATA,
-			'DYC5555' name,
-			'轴承' type,
-			sb.BRNG_MODEL_NUMBER,
-			sb.BRNG_MANUFACTURE,
-			sb.BRNG_DESCRIPTION,
-			sb.BRNG_BPFO,
-			sb.BRNG_BPFI,
-			sb.BRNG_BSF,
-			sb.BRNG_FTF
-		from 
-			skf_brng sb
-		left join 
-			skf_img simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE 
-        limit #{stratRow},#{endRow}  
- </select>
-  <select id="listPageCount" resultType="java.lang.Integer">  
-        select 
-        	count(sb.BRNG_CODE)
-		from 
-			skf_brng sb
-		left join 
-			skf_img simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE 
- </select>   
  
-  
-   <select id="getBearingDetail" parameterType="java.lang.String" resultMap="ResultPage">  
-         select 
-        	sb.BRNG_CODE,
-			simg.IMG_DATA,
-			simg.IMG_CODE,
-			'DYC5555' name,
-			'轴承' type,
-			sb.BRNG_MODEL_NUMBER,
-			sb.BRNG_MANUFACTURE,
-			sb.BRNG_DESCRIPTION,
-			sb.BRNG_BPFO,
-			sb.BRNG_BPFI,
-			sb.BRNG_BSF,
-			sb.BRNG_FTF
-		from 
-			skf_brng sb
-		left join 
-			skf_img simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE  
-		WHERE sb.BEARING_CODE = #{code,jdbcType=VARCHAR}
- </select>
 </mapper>

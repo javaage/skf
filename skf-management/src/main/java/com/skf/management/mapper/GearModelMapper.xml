@@ -303,47 +303,5 @@
       GEAR_IMAGE_CODE = #{imageCode,jdbcType=VARCHAR}
     where GEAR_CODE = #{code,jdbcType=VARCHAR}
   </update>
-  <select id="listPage" parameterType="map" resultMap="ResultPage">  
-        select 
-        	sg.GEAR_CODE,
-			simg.IMG_DATA,
-			'DYC5555' name,
-			'轴承' type,
-			sg.GEAR_MODEL_NUMBER,
-			sg.GEAR_MANUFACTURE,
-			sg.GEAR_DESCRIPTION,
-			sg.GEAR_MESHING_FREQUENCY
-		from 
-			skf_gear sg
-		left join 
-			skf_img simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
-        limit #{stratRow},#{endRow}  
- </select>
-  <select id="listPageCount" resultType="java.lang.Integer">  
-        select 
-        	count(sg.GEAR_CODE)
-		from 
-			skf_gear sg
-		left join 
-			skf_img simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
- </select>   
- 
   
-   <select id="getGearDetail" parameterType="java.lang.String" resultMap="ResultPage">  
-         select 
-        	sg.GEAR_CODE,
-			simg.IMG_DATA,
-			simg.IMG_CODE,
-			'DYC5555' name,
-			'轴承' type,
-			sg.GEAR_MODEL_NUMBER,
-			sg.GEAR_MANUFACTURE,
-			sg.GEAR_DESCRIPTION,
-			sg.GEAR_MESHING_FREQUENCY
-		from 
-			skf_gear sg
-		left join 
-			skf_img simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
-		WHERE sg.GEAR_CODE = #{code,jdbcType=VARCHAR}
- </select>
 </mapper>

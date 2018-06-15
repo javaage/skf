@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.skf.management.entity.Page;
+import com.skf.management.mapper.BearingMapper;
 import com.skf.management.mapper.BearingModelMapper;
 import com.skf.management.model.BearingModel;
 import com.skf.management.model.BearingModelExample;
@@ -31,12 +32,12 @@ public class BearingServiceImpl implements BearingService {
 	
 	@Override
 	public Page listPage(int currentPage) {
-		BearingModelMapper bearingModelMapper = sqlSession
-				.getMapper(BearingModelMapper.class);
+		BearingMapper bearingMapper = sqlSession
+				.getMapper(BearingMapper.class);
 
 		Page page = new Page();
 
-		int record = bearingModelMapper.listPageCount();
+		int record = bearingMapper.listPageCount();
 
 		page.setAllRowsAmount(record);
 		page.setCurrentPage(currentPage);
@@ -46,7 +47,7 @@ public class BearingServiceImpl implements BearingService {
 		parmMap.put("stratRow", page.getCurrentPageStartRow());
 		parmMap.put("endRow", page.getCurrentPageEndRow());
 
-		List<Object> data = bearingModelMapper.listPage(parmMap);
+		List<Object> data = bearingMapper.listPage(parmMap);
 
 		page.setItems(data);
 

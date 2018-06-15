@@ -9,7 +9,7 @@
       "type": "1",
       "status": "A",
       "score": "73",
-      "alarmTime": "5/16/2018, 1:07:39 PM"
+      "alarmTime": "4/7/2018 1:07:39"
     },
     {
       "id": "id1",
@@ -19,7 +19,7 @@
       "type": "2",
       "status": "B",
       "score": "71",
-      "alarmTime": "5/16/2018, 1:07:39 PM"
+      "alarmTime": "4/6/2018 1:07:39"
     },
     {
       "id": "id2",
@@ -29,7 +29,7 @@
       "type": "2",
       "status": "C",
       "score": "71",
-      "alarmTime": "5/16/2018, 1:07:39 PM"
+      "alarmTime": "1/6/2018 13:07:39"
     }
   ]
 }

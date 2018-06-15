@@ -53,14 +53,14 @@
 			su.USR_PHONE, 
 			su.USR_EMAIL, 
 			su.USR_LOGIN_TIME
-    from skf_usr su
-    left join skf_rl sr on sr.RL_ID=su.USR_RL_ID
+    from SKF_USR su
+    left join SKF_RL sr on sr.RL_ID=su.USR_RL_ID
     limit #{stratRow},#{endRow}  
  </select>
   <select id="listPageCount" resultType="java.lang.Integer">  
         select 
         	count(USR_CODE)
 		from 
-		skf_usr
+		SKF_USR
  </select>     
 </mapper>

@@ -34,9 +34,9 @@
 			'checked' 
 		END as ifChecked 
 	from 
-		skf_cstm sc 
+		SKF_CSTM sc 
 	left JOIN 
-		skf_usr_cstm suc 
+		SKF_USR_CSTM suc 
 	on 
 		sc.CSTM_CODE = suc.CSTM_CODE
 	and 

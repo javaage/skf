@@ -50,18 +50,18 @@
 			sb.BRNG_BSF,
 			sb.BRNG_FTF
 		from 
-			skf_brng sb
+			SKF_BRNG sb
 		left join 
-			skf_img simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE 
+			SKF_IMG simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE 
         limit #{stratRow},#{endRow}  
  </select>
   <select id="listPageCount" resultType="java.lang.Integer">  
         select 
         	count(sb.BRNG_CODE)
 		from 
-			skf_brng sb
+			SKF_BRNG sb
 		left join 
-			skf_img simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE 
+			SKF_IMG simg on simg.IMG_CODE= sb.BRNG_IMAGE_CODE 
  </select>   
  
   

@@ -41,18 +41,18 @@
 			sg.GEAR_DESCRIPTION,
 			sg.GEAR_MESHING_FREQUENCY
 		from 
-			skf_gear sg
+			SKF_GEAR sg
 		left join 
-			skf_img simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
+			SKF_IMG simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
         limit #{stratRow},#{endRow}  
  </select>
   <select id="listPageCount" resultType="java.lang.Integer">  
         select 
         	count(sg.GEAR_CODE)
 		from 
-			skf_gear sg
+			SKF_GEAR sg
 		left join 
-			skf_img simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
+			SKF_IMG simg on simg.IMG_CODE= sg.GEAR_IMAGE_CODE 
  </select>   
  
   

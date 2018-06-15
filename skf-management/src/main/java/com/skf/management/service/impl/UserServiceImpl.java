@@ -18,6 +18,7 @@ import com.skf.management.entity.UserOEMEntity;
 import com.skf.management.mapper.LoginMapper;
 import com.skf.management.mapper.UserCustomerMapper;
 import com.skf.management.mapper.UserCustomerModelMapper;
+import com.skf.management.mapper.UserMapper;
 import com.skf.management.mapper.UserModelMapper;
 import com.skf.management.mapper.UserOEMMapper;
 import com.skf.management.mapper.UserOEMModelMapper;
@@ -95,12 +96,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public Page listPage(int currentPage) {
-		UserModelMapper userModelMapper = sqlSession
-				.getMapper(UserModelMapper.class);
+		UserMapper userMapper = sqlSession
+				.getMapper(UserMapper.class);
 
 		Page page = new Page();
 
-		int record = userModelMapper.listPageCount();
+		int record = userMapper.listPageCount();
 
 		page.setAllRowsAmount(record);
 		page.setCurrentPage(currentPage);
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
 		parmMap.put("stratRow", page.getCurrentPageStartRow());
 		parmMap.put("endRow", page.getCurrentPageEndRow());
 
-		List<Object> data = userModelMapper.listPage(parmMap);
+		List<Object> data = userMapper.listPage(parmMap);
 
 		page.setItems(data);
 

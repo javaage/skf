@@ -3,12 +3,14 @@ package com.skf.management.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.skf.management.mapper.ImageModelMapper;
 import com.skf.management.model.ImageModel;
+import com.skf.management.model.ImageModelExample;
 import com.skf.management.service.ImageService;
 
 @Service
@@ -16,12 +18,23 @@ public class ImageServiceImpl implements ImageService {
 
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Override
 	public List<ImageModel> list() {
 		ImageModelMapper imageModelMapper =sqlSession.getMapper(ImageModelMapper.class);
 		return imageModelMapper.selectByExample(null);
+	}
+	
+	@Override
+	public List<ImageModel> listByType(Integer type) {
+		ImageModelMapper imageModelMapper =sqlSession.getMapper(ImageModelMapper.class);
+		
+		ImageModelExample example = new ImageModelExample();
+		
+		example.createCriteria().andComponentTypeIDEqualTo(type);
+		
+		return imageModelMapper.selectByExampleWithBLOBs(example);
 	}
 
 	@Override

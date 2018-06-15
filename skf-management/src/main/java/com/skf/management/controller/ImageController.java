@@ -48,6 +48,21 @@ public class ImageController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/list/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object listByType(@PathVariable("type") Integer type) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					imageService.listByType(type));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/listWithBLOBs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object listWithBLOBs(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();

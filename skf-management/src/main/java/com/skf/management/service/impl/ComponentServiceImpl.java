@@ -1,12 +1,17 @@
 package com.skf.management.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.skf.management.join.ComponentJoin;
+import com.skf.management.mapper.ComponentMapper;
 import com.skf.management.mapper.ComponentModelMapper;
 import com.skf.management.model.ComponentModel;
 import com.skf.management.model.ComponentModelExample;
@@ -17,7 +22,7 @@ public class ComponentServiceImpl implements ComponentService {
 
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Override
 	public List<ComponentModel> list() {
@@ -65,6 +70,22 @@ public class ComponentServiceImpl implements ComponentService {
 			delete(componentModel.getCode());
 		}
 		
+	}
+
+	@Override
+	public List<ComponentJoin> getComponentScoreByOwerID(String sensorCode) {
+		ComponentMapper customerMapper =sqlSession.getMapper(ComponentMapper.class);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("sensorCode", sensorCode);
+		return customerMapper.getComponentScoreByOwerID(map);
+	}
+
+	@Override
+	public ComponentJoin getComponentScoreByID(String componentCode) {
+		ComponentMapper customerMapper =sqlSession.getMapper(ComponentMapper.class);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("componentCode", componentCode);
+		return customerMapper.getComponentScoreByID(map);
 	}
 
 }

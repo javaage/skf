@@ -1,10 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     6/5/2018 3:36:02 PM                          */
+/* Created on:     6/14/2018 5:12:14 PM                         */
 /*==============================================================*/
 
-
-drop table if exists SKF_ALRM;
 
 drop table if exists SKF_BRNG;
 
@@ -28,8 +26,6 @@ drop table if exists SKF_RL;
 
 drop table if exists SKF_SNSR;
 
-drop table if exists SKF_TRND;
-
 drop table if exists SKF_USR;
 
 drop table if exists SKF_USR_CSTM;
@@ -37,36 +33,12 @@ drop table if exists SKF_USR_CSTM;
 drop table if exists SKF_USR_OEM;
 
 /*==============================================================*/
-/* Table: SKF_ALRM                                              */
-/*==============================================================*/
-create table SKF_ALRM
-(
-   ALRM_ID              int not null auto_increment,
-   ALRM_TIME            timestamp not null,
-   ALRM_CMPT_CODE       varchar(50) not null,
-   ALRM_SNSR_CODE       varchar(50) not null,
-   ALRM_IS_MAIN         boolean,
-   ALRM_TYPE            varchar(50),
-   ALRM_NAME            varchar(50),
-   ALRM_COMMENT         varchar(1024),
-   ALRM_STATE           varchar(50),
-   ALRM_STATE_TIME      timestamp,
-   ALRM_CLAIM_COMMENT   varchar(1024),
-   ALRM_DEAL_COMMENT    varchar(1024),
-   ALRM_REOPEN_COMMENT  varchar(1024),
-   primary key (ALRM_ID)
-)
-charset = UTF8;
-
-alter table SKF_ALRM comment 'bp alarm';
-
-/*==============================================================*/
 /* Table: SKF_BRNG                                              */
 /*==============================================================*/
 create table SKF_BRNG
 (
    BRNG_CODE            varchar(50) not null,
-   BRNG_MODEL_NUMBER    int not null auto_increment,
+   BRNG_MODEL_NUMBER    varchar(50) not null,
    BRNG_MANUFACTURE     varchar(50),
    BRNG_DESCRIPTION     varchar(1024),
    BRNG_BPFO            float,
@@ -87,6 +59,7 @@ alter table SKF_BRNG comment 'bearing';
 create table SKF_CMPT
 (
    CMPT_CODE            varchar(50) not null,
+   CMPT_NAME            varchar(50) not null,
    CMPT_SNSR_CODE       varchar(50) not null,
    CMPT_CPCT_ID         int not null,
    CMPT_BEARINGGEAR_CODE varchar(50) not null,
@@ -98,7 +71,8 @@ create table SKF_CMPT
    CMPT_TOTAL_VALUE     float not null,
    CMPT_DEFECT_RANGE    float,
    CMPT_DEFECT_TYPE     int not null,
-   primary key (CMPT_CODE)
+   primary key (CMPT_CODE),
+   unique key AK_KEY_CMPT_NAME (CMPT_NAME, CMPT_SNSR_CODE)
 )
 charset = UTF8;
 
@@ -145,7 +119,7 @@ alter table SKF_CSTM comment 'custom';
 create table SKF_GEAR
 (
    GEAR_CODE            varchar(50) not null,
-   GEAR_MODEL_NUMBER    int not null auto_increment,
+   GEAR_MODEL_NUMBER    varchar(50) not null,
    GEAR_MANUFACTURE     varchar(50),
    GEAR_DESCRIPTION     varchar(1024),
    GEAR_MESHING_FREQUENCY float,
@@ -184,7 +158,7 @@ create table SKF_OEM
    OEM_INTRODUCTION     varchar(1024),
    OEM_IMG              mediumblob not null,
    primary key (OEM_CODE),
-   unique key AK_KEY_OEM_NAME (OEM_NAME)
+   unique key AK_KEY_OEM_NAME (OEM_NAME, OEM_CODE)
 )
 charset = UTF8;
 
@@ -201,7 +175,7 @@ create table SKF_QPMT
    QPMT_SETUP_DATE      date not null,
    QPMT_CSTM_CODE       varchar(50) not null,
    primary key (QPMT_CODE),
-   unique key AK_KEY_QPMT_NAME (QPMT_NAME)
+   unique key AK_KEY_QPMT_NAME (QPMT_NAME, QPMT_CSTM_CODE)
 )
 charset = UTF8;
 
@@ -218,7 +192,7 @@ create table SKF_QPMT_TYPE
    QPTP_TYPE_DESC       VARCHAR(50),
    QPTP_TYPE_IMG        mediumblob not null,
    primary key (QPTP_TYPE_CODE),
-   unique key AK_KEY_QPTP_TYPE_NAME (QPTP_TYPE_NAME)
+   unique key AK_KEY_QPTP_TYPE_NAME (QPTP_TYPE_NAME, QPTP_CSTM_CODE)
 )
 charset = UTF8;
 
@@ -256,45 +230,6 @@ create table SKF_SNSR
 charset = UTF8;
 
 alter table SKF_SNSR comment 'sensor';
-
-/*==============================================================*/
-/* Table: SKF_TRND                                              */
-/*==============================================================*/
-create table SKF_TRND
-(
-   TRND_ID              int not null auto_increment,
-   TRND_TIME            timestamp not null,
-   TRND_CMPT_CODE       varchar(50) not null,
-   TRND_SNSR_CODE       varchar(50) not null,
-   TRND_IS_MAIN         boolean,
-   TRND_DICT_CODE       varchar(50),
-   TRND_F1              float,
-   TRND_F2              float,
-   TRND_F3              float,
-   TRND_F4              float,
-   TRND_F5              float,
-   TRND_F6              float,
-   TRND_F7              float,
-   TRND_F8              float,
-   TRND_F9              float,
-   TRND_F10             float,
-   TRND_F11             float,
-   TRND_F12             float,
-   TRND_F13             float,
-   TRND_F14             float,
-   TRND_F15             float,
-   TRND_F16             float,
-   TRND_F17             float,
-   TRND_F18             float,
-   TRND_F19             float,
-   TRND_F20             float,
-   TRND_SCORE           float,
-   TRND_CONDITION       varchar(1024),
-   primary key (TRND_ID)
-)
-charset = UTF8;
-
-alter table SKF_TRND comment 'bp trend';
 
 /*==============================================================*/
 /* Table: SKF_USR                                               */

@@ -2,6 +2,7 @@ package com.skf.management.service;
 
 import java.util.List;
 
+import com.skf.management.join.ComponentJoin;
 import com.skf.management.model.ComponentModel;
 
 public interface ComponentService {
@@ -18,4 +19,8 @@ public interface ComponentService {
 	void delete(String code);
 	
 	void deleteByOwner(String code);
+	
+	List<ComponentJoin> getComponentScoreByOwerID(String sensorCode);
+	
+	ComponentJoin getComponentScoreByID(String componentCode);
 }

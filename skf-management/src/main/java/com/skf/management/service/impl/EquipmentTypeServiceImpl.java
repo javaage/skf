@@ -3,6 +3,7 @@ package com.skf.management.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class EquipmentTypeServiceImpl implements EquipmentTypeService {
 
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Autowired
 	private EquipmentService equipmentService;
@@ -44,7 +45,7 @@ public class EquipmentTypeServiceImpl implements EquipmentTypeService {
 	@Override
 	public void update(EquipmentTypeModel model) {
 		EquipmentTypeModelMapper equipmentTypeModelMapper =sqlSession.getMapper(EquipmentTypeModelMapper.class);
-		equipmentTypeModelMapper.updateByPrimaryKey(model);
+		equipmentTypeModelMapper.updateByPrimaryKeyWithBLOBs(model);
 	}
 
 	@Override

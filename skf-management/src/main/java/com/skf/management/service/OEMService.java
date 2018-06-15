@@ -11,6 +11,8 @@ public interface OEMService {
 	List<OEMModel> listWithBLOBs();
 	
 	List<OEMJoin> listTree();
+
+	List<OEMJoin> listTree(List<String> oemList, List<String> cstmList);
 	
 	void add(OEMModel model);
 

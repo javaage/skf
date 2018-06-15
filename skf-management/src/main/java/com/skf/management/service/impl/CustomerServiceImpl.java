@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Autowired
 	private EquipmentService equipmentService;
@@ -56,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void update(CustomerModel model) {
 		CustomerModelMapper customerModelMapper =sqlSession.getMapper(CustomerModelMapper.class);
-		customerModelMapper.updateByPrimaryKey(model);
+		customerModelMapper.updateByPrimaryKeyWithBLOBs(model);
 	}
 
 	@Override
@@ -83,6 +84,28 @@ public class CustomerServiceImpl implements CustomerService {
 			customerJoin.setCustomerModel(customerModel);
 			customerJoin.setListEquipmentModel(equipmentService.listByOwner(customerModel.getCode()));
 			listCustomerJoin.add(customerJoin);
+		}
+		return listCustomerJoin;
+	}
+	
+	@Override
+	public List<CustomerJoin> listTree(String code, List<String> oemList, List<String> cstmList) {
+		CustomerModelMapper customerModelMapper =sqlSession.getMapper(CustomerModelMapper.class);
+		CustomerModelExample example = new CustomerModelExample();
+		CustomerModelExample.Criteria criteria = example.createCriteria();
+		criteria.andOemCodeEqualTo(code);
+		List<CustomerModel> listCustomerModel= customerModelMapper.selectByExampleWithBLOBs(example);
+		
+		List<CustomerJoin> listCustomerJoin = new ArrayList<CustomerJoin>();
+		
+		for(CustomerModel customerModel : listCustomerModel){
+			CustomerJoin customerJoin = new CustomerJoin();
+			
+			if(cstmList.contains(customerModel.getCode())){
+				customerJoin.setCustomerModel(customerModel);
+				customerJoin.setListEquipmentModel(equipmentService.listByOwner(customerModel.getCode()));
+				listCustomerJoin.add(customerJoin);
+			}
 		}
 		return listCustomerJoin;
 	}

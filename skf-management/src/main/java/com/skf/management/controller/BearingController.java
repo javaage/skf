@@ -47,6 +47,21 @@ public class BearingController {
 		}
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/list/{currentPage}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object list(@PathVariable("currentPage") int currentPage) {
+		Map<String, Object> map = new HashMap<String, Object>();
+				
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					bearingService.listPage(currentPage));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -107,6 +122,20 @@ public class BearingController {
 		try {
 			bearingService.delete(code);
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK);
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/listModel/{modelNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object listModel(HttpServletRequest request, @PathVariable("modelNumber") String modelNumber) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					bearingService.listModel(modelNumber));
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());

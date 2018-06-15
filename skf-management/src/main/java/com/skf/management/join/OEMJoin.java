@@ -6,6 +6,7 @@ import java.util.List;
 import com.skf.management.model.OEMModel;
 
 public class OEMJoin extends OEMModel {
+	private boolean hasPrivilege;
 	private List<CustomerJoin> listCustomerJoin = new ArrayList<CustomerJoin>();
 
 	public List<CustomerJoin> getListCustomerJoin() {
@@ -26,5 +27,13 @@ public class OEMJoin extends OEMModel {
 		this.setName(oemModel.getName());
 		this.setState(oemModel.getState());
 		this.setUrl(oemModel.getUrl());
+	}
+
+	public boolean isHasPrivilege() {
+		return hasPrivilege;
+	}
+
+	public void setHasPrivilege(boolean hasPrivilege) {
+		this.hasPrivilege = hasPrivilege;
 	}
 }

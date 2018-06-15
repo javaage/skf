@@ -65,7 +65,7 @@ public class CustomerController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/list{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/list/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object listByOwner(HttpServletRequest request, @PathVariable("code") String code) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		

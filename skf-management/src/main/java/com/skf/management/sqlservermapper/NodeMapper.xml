@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.skf.management.sqlservermapper.NodeMapper">
-	<select id="getLeafNodes" parameterType="string" resultMap="java.util.List">
-		SELECT IDNode FROM diwa.dbo.Node
+	<select id="getLeafNodes" parameterType="map" resultType="Integer">
+		SELECT distinct IDNode FROM ${schema}.dbo.Node where IDNode not in (SELECT distinct IDParent FROM ${schema}.dbo.Node)
 	</select>
+	
+	<select id="getDatabases" resultType="String">
+		select name from sys.databases where name not in ('master','tempdb','model','msdb')
+	</select>
+	
+	<select id="getNodeCount" parameterType="map" resultType="Integer">
+		select count(*) from ${schema}.sys.tables where name='node'
+	</select>
+	
 </mapper>

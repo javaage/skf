@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.skf.management.join.CustomerJoin;
 import com.skf.management.join.OEMJoin;
 import com.skf.management.mapper.OEMModelMapper;
 import com.skf.management.model.OEMModel;
@@ -19,7 +21,7 @@ public class OEMServiceImpl implements OEMService {
 	
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Autowired
 	private CustomerService customerService;
@@ -45,8 +47,7 @@ public class OEMServiceImpl implements OEMService {
 	@Override
 	public void update(OEMModel model) {
 		OEMModelMapper oemModelMapper =sqlSession.getMapper(OEMModelMapper.class);
-		oemModelMapper.updateByPrimaryKey(model);
-		
+		oemModelMapper.updateByPrimaryKeyWithBLOBs(model);
 	}
 
 	@Override
@@ -61,7 +62,28 @@ public class OEMServiceImpl implements OEMService {
 			oemJoin.setListCustomerJoin(customerService.listTree(oemModel.getCode()));
 			listOEMJoin.add(oemJoin);
 		}
+		return listOEMJoin;
+	}
+	
+	@Override
+	public List<OEMJoin> listTree(List<String> oemList, List<String> cstmList) {
+		OEMModelMapper oemModelMapper =sqlSession.getMapper(OEMModelMapper.class);
+		List<OEMModel> listOEMModel = oemModelMapper.selectByExampleWithBLOBs(null);
+		List<OEMJoin> listOEMJoin = new ArrayList<OEMJoin>();
 		
+		for(OEMModel oemModel : listOEMModel){
+			OEMJoin oemJoin = new OEMJoin();
+			oemJoin.setOEMModel(oemModel);
+			List<CustomerJoin> listCustomerJoin = customerService.listTree(oemModel.getCode(), oemList, cstmList);
+			
+			if(oemList.contains(oemJoin.getCode()) || listCustomerJoin.size() > 0){
+				oemJoin.setHasPrivilege(true);
+				oemJoin.setListCustomerJoin(listCustomerJoin);
+				listOEMJoin.add(oemJoin);
+			}else{
+				oemJoin.setHasPrivilege(false);
+			}
+		}
 		return listOEMJoin;
 	}
 

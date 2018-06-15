@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skf.scheduler.mapper.sqlserver.SqlServerMapper">
+
+	<resultMap id="BaseResultMap" type="com.skf.scheduler.entity.SqlServerRequestData">
+		<result column="IDMeasurement" jdbcType="INTEGER" property="idMeasurement" />
+		<result column="IDNode" jdbcType="INTEGER" property="idNode" />
+		<result column="MeasDate" jdbcType="TIMESTAMP" property="measDate" />
+		<result column="StorageReason" jdbcType="INTEGER" property="storageReason" />
+		<result column="SampleRate" jdbcType="FLOAT" property="sampleRate" />
+		<result column="SpectraScaling" jdbcType="INTEGER" property="spectraScaling" />
+		<result column="TimesignalLines" jdbcType="INTEGER" property="timesignalLines" />
+		<result column="EndFreq" jdbcType="FLOAT" property="endFreq" />
+		<result column="SpectraLines" jdbcType="INTEGER" property="spectraLines" />
+		<result column="ScaleFactor" jdbcType="FLOAT" property="scaleFactor" />
+		<result column="RawData" jdbcType="BLOB" property="rawData" />
+		<result column="schemaName" jdbcType="VARCHAR" property="schema" />
+	</resultMap>
+
+	<select id="getSchemas" resultType="java.lang.String">
+		SELECT name FROM
+		master..sysdatabases WHERE name NOT IN ( 'master', 'model', 'msdb',
+		'tempdb', 'northwind','pubs','ReportServer','ReportServerTempDB' )
+	</select>
+
+	<select id="getCountMeasurementTable" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		SELECT count(name) FROM ${schema}..sysobjects Where
+		xtype='U' and name = 'Measurement'
+	</select>
+
+	<select id="getRequestDatas" resultMap="BaseResultMap">
+		select top 10
+		a.IDMeasurement,
+		a.IDNode,
+		'${schema}' as schemaName,
+		a.MeasDate,
+		a.StorageReason, a.SampleRate, a.SpectraScaling,
+		a.TimesignalLines,a.EndFreq, a.SpectraLines, b.ScaleFactor, b.RawData
+		from ${schema}.dbo.Measurement a
+		left join
+		${schema}.dbo.MeasurementBinaryRaw b on a.IDMeasurement =
+		b.IDMeasurement where a.IDMeasurement > #{idMeasurement,
+		jdbcType=INTEGER} and b.DataType = 0
+	</select>
+
+	<select id="getFreqRotation" resultType="java.lang.Float">
+		select Amp
+		from ${schema}.dbo.TrendSingle
+		where IDPoint = #{idNode,jdbcType=INTEGER}
+		AND ReadingTime = (select max(ReadingTime) from ${schema}.dbo.TrendSingle
+		where IDPoint = #{idNode,jdbcType=INTEGER})
+	</select>
+
+</mapper>

@@ -1,11 +1,11 @@
 package com.skf.management.util;
 
-import java.util.UUID;
+//import java.util.UUID;
 
 public class UUIDUtil {
 
 	public static String getUUID() {
-		return UUID.randomUUID().toString().replace("-", "");
+		return null;//UUID.randomUUID().toString().replace("-", "");
 	}
 
 }

@@ -13,6 +13,7 @@ public final class Constant {
 	public static final Integer HTTP_TYPE_NO_PERMISSION = -3;
 	public static final Integer HTTP_TYPE_CODE_NOT_EXISTS = -4;
 	public static final Integer HTTP_TYPE_DUPLICATE_KEY_EXCEPTION = -5;
+	public static final Integer HTTP_TYPE_CHECK_ERROR = -6;
 
 	public static final String HTTP_MSG_OK = "OK";
 	public static final String HTTP_MSG_ERROR = "SYSTEM ERROR";
@@ -21,4 +22,6 @@ public final class Constant {
 	public static final String HTTP_MSG_ERROR_REPEAT = "CODE EXISTS";
 	public static final String HTTP_MSG_ERROR_NOT_EXISTS = "NOT EXISTS";
 	public static final String HTTP_MSG_DUPLICATE_KEY_EXCEPTION = "DUPLICATE KEY";
+	public static final String HTTP_MSG_CHECK_PW_ERROR = "PASSWORD ERROR OR SAME";
+	
 }	

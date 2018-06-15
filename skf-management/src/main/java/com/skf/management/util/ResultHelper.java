@@ -3,6 +3,7 @@ package com.skf.management.util;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class ResultHelper {
 
 	public static Map<String, Object> createResult(int code, String msg) {

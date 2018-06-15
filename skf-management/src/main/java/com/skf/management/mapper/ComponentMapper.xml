@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skf.management.mapper.ComponentMapper">
+  <resultMap id="BaseResultMap" type="com.skf.management.join.ComponentJoin">
+    <result column="CMPT_CODE" jdbcType="VARCHAR" property="code" />
+    <result column="CMPT_SNSR_CODE" jdbcType="VARCHAR" property="sensorCode" />
+    <result column="CMPT_CPCT_ID" jdbcType="INTEGER" property="componentTypeID" />
+    <result column="CMPT_BEARINGGEAR_CODE" jdbcType="VARCHAR" property="bearingGearCode" />
+    <result column="CMPT_DANGER_LEVEL" jdbcType="REAL" property="dangerLevel" />
+    <result column="CMPT_ROTATION_SPEED" jdbcType="REAL" property="rotationSpeed" />
+    <result column="CMPT_SPEED_TYPE" jdbcType="INTEGER" property="speedType" />
+    <result column="CMPT_SCHEMA_NAME" jdbcType="VARCHAR" property="schemaName" />
+    <result column="CMPT_NODE_ID" jdbcType="INTEGER" property="nodeID" />
+    <result column="CMPT_TOTAL_VALUE" jdbcType="REAL" property="totalValue" />
+    <result column="CMPT_DEFECT_RANGE" jdbcType="REAL" property="defectRange" />
+    <result column="CMPT_DEFECT_TYPE" jdbcType="INTEGER" property="defectType" />
+    <result column="CMPT_NAME" jdbcType="VARCHAR" property="name" />
+    <result column="ALRM_TYPE" jdbcType="INTEGER" property="type" />
+    <result column="ALRM_TIME" jdbcType="TIMESTAMP" property="time" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="TOTAL_VALUE" jdbcType="REAL" property="totalValue" />
+    <result column="DANDER_LAVEL" jdbcType="REAL" property="dangerLevel" />
+    <result column="SCORE" jdbcType="REAL" property="score" />
+    <result column="CLASS" jdbcType="VARCHAR" property="alarmClass" />
+    <result column="DEFECT_FREQ_ORDER" jdbcType="REAL" property="defectFreqOrder" />
+    <result column="BP_TYPE" jdbcType="VARCHAR" property="bpType" />
+    <result column="IMG_DATA" jdbcType="LONGVARBINARY" property="img" />
+  </resultMap>
+  
+  <select id="getComponentScoreByOwerID" parameterType="map" resultMap="BaseResultMap">
+	select C.CMPT_CODE as CMPT_CODE, CMPT_SNSR_CODE, CMPT_CPCT_ID, CMPT_BEARINGGEAR_CODE, CMPT_DANGER_LEVEL, 
+    CMPT_ROTATION_SPEED, CMPT_SPEED_TYPE, CMPT_SCHEMA_NAME, CMPT_NODE_ID, CMPT_TOTAL_VALUE, 
+    CMPT_DEFECT_RANGE, CMPT_DEFECT_TYPE, CMPT_NAME, TIME, CALSS, SCORE, TOTAL_VALUE, DANGER_LEVEL, BP_TYPE, 
+    (CASE CMPT_CPCT_ID WHEN '1' THEN IB.IMG_DATA ELSE IG.IMG_DATA END) AS IMG_DATA
+    FROM SKF_CMPT C 
+    LEFT JOIN SKF_CMPT_SCORE S ON C.CMPT_CODE=S.CMPT_CODE 
+    LEFT JOIN SKF_BRNG B ON C.CMPT_BEARINGGEAR_CODE = B.BRNG_CODE
+    LEFT JOIN SKF_IMG IB ON B.BRNG_IMAGE_CODE = IB.IMG_CODE
+    LEFT JOIN SKF_GEAR G ON C.CMPT_BEARINGGEAR_CODE = G.GEAR_CODE
+    LEFT JOIN SKF_IMG IG ON G.GEAR_IMAGE_CODE = IG.IMG_CODE
+    WHERE C.CMPT_SNSR_CODE = #{sensorCode}
+  </select>
+  
+  <select id="getComponentScoreByID" parameterType="map" resultMap="BaseResultMap">
+	select C.CMPT_CODE as CMPT_CODE, CMPT_SNSR_CODE, CMPT_CPCT_ID, CMPT_BEARINGGEAR_CODE, CMPT_DANGER_LEVEL, 
+    CMPT_ROTATION_SPEED, CMPT_SPEED_TYPE, CMPT_SCHEMA_NAME, CMPT_NODE_ID, CMPT_TOTAL_VALUE, 
+    CMPT_DEFECT_RANGE, CMPT_DEFECT_TYPE, CMPT_NAME, TIME, CALSS, SCORE, TOTAL_VALUE, DANGER_LEVEL, BP_TYPE, 
+    (CASE CMPT_CPCT_ID WHEN '1' THEN IB.IMG_DATA ELSE IG.IMG_DATA END) AS IMG_DATA
+    FROM SKF_CMPT C 
+    LEFT JOIN SKF_CMPT_SCORE S ON C.CMPT_CODE=S.CMPT_CODE 
+    LEFT JOIN SKF_BRNG B ON C.CMPT_BEARINGGEAR_CODE = B.BRNG_CODE
+    LEFT JOIN SKF_IMG IB ON B.BRNG_IMAGE_CODE = IB.IMG_CODE
+    LEFT JOIN SKF_GEAR G ON C.CMPT_BEARINGGEAR_CODE = G.GEAR_CODE
+    LEFT JOIN SKF_IMG IG ON G.GEAR_IMAGE_CODE = IG.IMG_CODE
+    WHERE C.CMPT_CODE = #{componentCode}
+  </select>
+	
+</mapper>

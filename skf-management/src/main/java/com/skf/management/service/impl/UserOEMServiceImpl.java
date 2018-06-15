@@ -3,10 +3,12 @@ package com.skf.management.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.skf.management.entity.UserOEMEntity;
 import com.skf.management.mapper.UserOEMModelMapper;
 import com.skf.management.model.UserOEMModelExample;
 import com.skf.management.model.UserOEMModelKey;
@@ -17,7 +19,7 @@ public class UserOEMServiceImpl implements UserOEMService {
 
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Override
 	public List<UserOEMModelKey> list() {
@@ -47,6 +49,13 @@ public class UserOEMServiceImpl implements UserOEMService {
 		UserOEMModelExample.Criteria criteria = example.createCriteria();
 		criteria.andUserCodeEqualTo(code);
 		oemModelMapper.deleteByExample(example);
+	}
+
+	@Override
+	public List<UserOEMEntity> getOEMListByCode(String code) {
+		// TODO Auto-generated method stub
+		UserOEMModelMapper oemModelMapper =sqlSession.getMapper(UserOEMModelMapper.class);
+		return oemModelMapper.selectByUserCode(code);
 	}
 
 }

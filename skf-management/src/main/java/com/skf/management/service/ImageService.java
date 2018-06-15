@@ -9,6 +9,8 @@ public interface ImageService {
 
 	List<ImageModel> listWithBLOBs();
 	
+	List<ImageModel> listByType(Integer type);
+	
 	void add(ImageModel model);
 
 	ImageModel getImageByCode(String code);

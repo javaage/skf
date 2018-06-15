@@ -12,6 +12,8 @@ public interface CustomerService {
 	
 	List<CustomerJoin> listTree(String code);
 	
+	List<CustomerJoin> listTree(String code, List<String> oemList, List<String> cstmList);
+	
 	List<CustomerModel> listByOwner(String code);
 	
 	void add(CustomerModel model);

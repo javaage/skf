@@ -3,10 +3,12 @@ package com.skf.management.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.skf.management.entity.UserCustomerEntity;
 import com.skf.management.mapper.UserCustomerModelMapper;
 import com.skf.management.model.UserCustomerModelExample;
 import com.skf.management.model.UserCustomerModelKey;
@@ -17,7 +19,7 @@ public class UserCustomerServiceImpl implements UserCustomerService {
 
 	@Autowired
 	@Qualifier("mysqlsession")
-	private SqlSession sqlSession;
+	private SqlSessionTemplate sqlSession;
 	
 	@Override
 	public List<UserCustomerModelKey> list() {
@@ -47,6 +49,13 @@ public class UserCustomerServiceImpl implements UserCustomerService {
 		UserCustomerModelExample.Criteria criteria = example.createCriteria();
 		criteria.andUserCodeEqualTo(code);
 		customerModelMapper.deleteByExample(example);
+	}
+
+	@Override
+	public List<UserCustomerEntity> getCustomerListByCode(String code) {
+		// TODO Auto-generated method stub
+		UserCustomerModelMapper customerModelMapper =sqlSession.getMapper(UserCustomerModelMapper.class);
+		return customerModelMapper.selectByUserCode(code);
 	}
 
 }

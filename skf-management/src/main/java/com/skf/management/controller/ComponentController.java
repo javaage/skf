@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,7 @@ public class ComponentController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/list{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/list/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object listByOwner(HttpServletRequest request, @PathVariable("code") String code) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -62,7 +63,37 @@ public class ComponentController {
 		}
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/listScore/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getComponentScoreByOwerID(HttpServletRequest request, @PathVariable("code") String code) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					componentService.getComponentScoreByOwerID(code));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
 
+	@ResponseBody
+	@RequestMapping(value = "/getScore/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getComponentScoreByID(HttpServletRequest request, @PathVariable("code") String code) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					componentService.getComponentScoreByID(code));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object add(@RequestBody ComponentModel model) {
@@ -71,6 +102,8 @@ public class ComponentController {
 		try {
 			componentService.add(model);
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK);
+		} catch (DuplicateKeyException e){
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_DUPLICATE_KEY_EXCEPTION, Constant.HTTP_MSG_DUPLICATE_KEY_EXCEPTION);
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());
@@ -107,6 +140,8 @@ public class ComponentController {
 			} else {
 				map = ResultHelper.createResult(Constant.HTTP_TYPE_CODE_NOT_EXISTS, Constant.HTTP_MSG_ERROR_NOT_EXISTS);
 			}
+		} catch (DuplicateKeyException e){
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_DUPLICATE_KEY_EXCEPTION, Constant.HTTP_MSG_DUPLICATE_KEY_EXCEPTION);
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());

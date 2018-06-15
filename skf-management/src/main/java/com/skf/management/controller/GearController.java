@@ -33,13 +33,13 @@ public class GearController {
 	private GearService gearService;
 
 	@ResponseBody
-	@RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Object list(HttpServletRequest request) {
+	@RequestMapping(value = "/list/{currentPage}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object list(@PathVariable("currentPage") int currentPage) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+				
 		try{
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
-					gearService.list());
+					gearService.listPage(currentPage));
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());
@@ -55,6 +55,24 @@ public class GearController {
 		try {
 			gearService.add(model);
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK);
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object edit(@RequestBody GearModel model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if (gearService.getGearByCode(model.getCode()) != null) {
+				gearService.update(model);
+				map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK);
+			} else {
+				map = ResultHelper.createResult(Constant.HTTP_TYPE_CODE_NOT_EXISTS, Constant.HTTP_MSG_ERROR_NOT_EXISTS);
+			}
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());
@@ -80,23 +98,7 @@ public class GearController {
 		return map;
 	}
 
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Object edit(@RequestBody GearModel model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			if (gearService.getGearByCode(model.getCode()) != null) {
-				gearService.update(model);
-				map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK);
-			} else {
-				map = ResultHelper.createResult(Constant.HTTP_TYPE_CODE_NOT_EXISTS, Constant.HTTP_MSG_ERROR_NOT_EXISTS);
-			}
-		} catch (Exception e) {
-			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
-			log.debug(e.getMessage());
-		}
-		return map;
-	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "/{code}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -111,4 +113,39 @@ public class GearController {
 		}
 		return map;
 	}
+
+	
+	@ResponseBody
+	@RequestMapping(value = "/imglist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getImgList(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+//		try {
+//			GearEntity model = gearService.getGearDetailByCode(code);
+//			if (model == null) {
+//				map = ResultHelper.createResult(Constant.HTTP_TYPE_CODE_NOT_EXISTS, Constant.HTTP_MSG_ERROR_NOT_EXISTS);
+//			} else {
+//				map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK, model);
+//			}
+//		} catch (Exception e) {
+//			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+//			log.debug(e.getMessage());
+//		}
+		return map;
+	}
+
+	
+	@ResponseBody
+	@RequestMapping(value = "/listModel/{modelNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object listModel(HttpServletRequest request, @PathVariable("modelNumber") String modelNumber) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					gearService.listModel(modelNumber));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+
 }

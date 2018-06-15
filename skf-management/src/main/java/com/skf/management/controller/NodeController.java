@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,17 +31,33 @@ public class NodeController {
 	private NodeService nodeService;
 
 	@ResponseBody
-	@RequestMapping(value = "/leaflist", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Object list(HttpServletRequest request) {
+	@RequestMapping(value = "/leaflist/{schema}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object leaflist(HttpServletRequest request, @PathVariable("schema") String schema) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try{
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
-					nodeService.getLeafNodes(""));
+					nodeService.getLeafNodes(schema));
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());
 		}
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getNodeDatabase", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getNodeDatabase(HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					nodeService.getNodeDatabase());
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
 }

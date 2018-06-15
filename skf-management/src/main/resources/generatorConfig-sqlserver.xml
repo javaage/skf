@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+  <classPathEntry location="C:/Users/p9030576/.m2/repository/com/microsoft/sqlserver/sqljdbc4/4.0/sqljdbc4-4.0.jar" />
+  
+	<context id="context2">
+    <jdbcConnection connectionURL="jdbc:sqlserver://skf-app.cwmhaxdunvny.rds.cn-north-1.amazonaws.com.cn:1433;DatabaseName=diwa" driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" password="pa$$w0rd" userId="ob102user" /> 
+    <javaModelGenerator targetPackage="com.skf.management.model" targetProject="skf-management" />
+    <sqlMapGenerator targetPackage="com.skf.management.sqlservermapper" targetProject="skf-management" />
+    <javaClientGenerator targetPackage="com.skf.management.sqlservermapper" targetProject="skf-management" type="XMLMAPPER" />
+		<table schema="dbo" tableName="Node" domainObjectName="NodeModel">
+			<columnOverride column="IDNode" property="nodeID" />
+			<columnOverride column="IDParent" property="nodeParent" />
+		</table>
+		<table schema="dbo" tableName="Bearing" domainObjectName="DboBearingModel">
+			<columnOverride column="ModelNumber" property="modelNumber" />
+			<columnOverride column="Manufacture" property="manufacture" />
+			<columnOverride column="Description" property="description" />
+			<columnOverride column="BPFO" property="bpfo" />
+			<columnOverride column="BPFI" property="bpfi" />
+			<columnOverride column="BSF" property="bsf" />
+			<columnOverride column="FTF" property="ftf" />
+		</table>
+	</context>
+</generatorConfiguration>

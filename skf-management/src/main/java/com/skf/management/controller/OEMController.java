@@ -1,6 +1,8 @@
 package com.skf.management.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skf.management.common.Constant;
+import com.skf.management.join.OEMJoin;
 import com.skf.management.model.OEMModel;
 import com.skf.management.service.OEMService;
 import com.skf.management.util.ResultHelper;
@@ -70,8 +73,19 @@ public class OEMController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try{
-			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
-					oemService.listTree());
+			List<String> oemList = (List<String>) request.getAttribute("oemCodeList");
+			List<String> cstmList = (List<String>) request.getAttribute("cstmCodeList");
+			
+			int userRoleId = (int) request.getAttribute("userRoleId");
+			
+			List<OEMJoin> listOEMJoin = new ArrayList<OEMJoin>();
+			
+			if(userRoleId == Constant.USER_CODE){
+				listOEMJoin = oemService.listTree(oemList, cstmList);
+			}else{
+				listOEMJoin = oemService.listTree();
+			}
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK, listOEMJoin);
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());

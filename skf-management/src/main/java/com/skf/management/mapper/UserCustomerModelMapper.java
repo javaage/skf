@@ -60,10 +60,5 @@ public interface UserCustomerModelMapper {
 	int updateByExample(@Param("record") UserCustomerModelKey record,
 			@Param("example") UserCustomerModelExample example);
 
-	/**
-	 * Add By Jamie 20180608
-	 * @param userCode
-	 * @return List<UserCustomerEntity>
-	 */
-	List<UserCustomerEntity> selectByUserCode(String userCode);
+
 }

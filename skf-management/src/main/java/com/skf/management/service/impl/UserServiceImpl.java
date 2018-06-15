@@ -16,8 +16,10 @@ import com.skf.management.entity.User;
 import com.skf.management.entity.UserCustomerEntity;
 import com.skf.management.entity.UserOEMEntity;
 import com.skf.management.mapper.LoginMapper;
+import com.skf.management.mapper.UserCustomerMapper;
 import com.skf.management.mapper.UserCustomerModelMapper;
 import com.skf.management.mapper.UserModelMapper;
+import com.skf.management.mapper.UserOEMMapper;
 import com.skf.management.mapper.UserOEMModelMapper;
 import com.skf.management.model.UserCustomerModelExample;
 import com.skf.management.model.UserCustomerModelKey;
@@ -138,19 +140,19 @@ public class UserServiceImpl implements UserService {
 	public User getUserAllByCode(String code) throws Exception{
 		UserModelMapper userModelMapper = sqlSession
 				.getMapper(UserModelMapper.class);
-		UserOEMModelMapper userOEMModelMapper = sqlSession
-				.getMapper(UserOEMModelMapper.class);
-		UserCustomerModelMapper userCustomerModelMapper = sqlSession
-				.getMapper(UserCustomerModelMapper.class);
-
+		UserOEMMapper userOEMMapper = sqlSession
+				.getMapper(UserOEMMapper.class);
+		UserCustomerMapper userCustomerMapper = sqlSession
+				.getMapper(UserCustomerMapper.class);
+		
 		UserModel model = userModelMapper.selectByPrimaryKey(code);
 
 		User user = User.newUserFormModel(model);
 		String userCode = user.getCode();
 
-		List<UserOEMEntity> oems = userOEMModelMapper
+		List<UserOEMEntity> oems = userOEMMapper
 				.selectByUserCode(userCode);
-		List<UserCustomerEntity> customers = userCustomerModelMapper
+		List<UserCustomerEntity> customers = userCustomerMapper
 				.selectByUserCode(userCode);
 
 		user.setUserOems(oems);

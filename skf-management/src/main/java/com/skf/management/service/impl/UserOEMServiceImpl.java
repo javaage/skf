@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.skf.management.entity.UserOEMEntity;
+import com.skf.management.mapper.UserOEMMapper;
 import com.skf.management.mapper.UserOEMModelMapper;
 import com.skf.management.model.UserOEMModelExample;
 import com.skf.management.model.UserOEMModelKey;
@@ -54,8 +55,8 @@ public class UserOEMServiceImpl implements UserOEMService {
 	@Override
 	public List<UserOEMEntity> getOEMListByCode(String code) {
 		// TODO Auto-generated method stub
-		UserOEMModelMapper oemModelMapper =sqlSession.getMapper(UserOEMModelMapper.class);
-		return oemModelMapper.selectByUserCode(code);
+		UserOEMMapper oemMapper =sqlSession.getMapper(UserOEMMapper.class);
+		return oemMapper.selectByUserCode(code);
 	}
 
 }

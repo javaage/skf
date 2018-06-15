@@ -59,10 +59,4 @@ public interface UserOEMModelMapper {
 	 */
 	int updateByExample(@Param("record") UserOEMModelKey record, @Param("example") UserOEMModelExample example);
 
-	/**
-	 * Add By Jamie 20180608
-	 * @param userCode
-	 * @return List<UserOEMEntity>
-	 */
-	List<UserOEMEntity> selectByUserCode(String userCode);
 }

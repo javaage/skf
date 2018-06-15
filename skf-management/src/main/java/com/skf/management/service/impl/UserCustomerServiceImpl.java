@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.skf.management.entity.UserCustomerEntity;
+import com.skf.management.mapper.UserCustomerMapper;
 import com.skf.management.mapper.UserCustomerModelMapper;
 import com.skf.management.model.UserCustomerModelExample;
 import com.skf.management.model.UserCustomerModelKey;
@@ -54,8 +55,8 @@ public class UserCustomerServiceImpl implements UserCustomerService {
 	@Override
 	public List<UserCustomerEntity> getCustomerListByCode(String code) {
 		// TODO Auto-generated method stub
-		UserCustomerModelMapper customerModelMapper =sqlSession.getMapper(UserCustomerModelMapper.class);
-		return customerModelMapper.selectByUserCode(code);
+		UserCustomerMapper customerMapper =sqlSession.getMapper(UserCustomerMapper.class);
+		return customerMapper.selectByUserCode(code);
 	}
 
 }

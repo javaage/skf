@@ -214,25 +214,5 @@
     </if>
   </update>
   
-  <select id="selectByUserCode" parameterType="String" resultMap="checkResultMap">
-    <!--
-      add By  Jamie 20180608
-    -->
-    select 
-		sc.CSTM_CODE as code,
-		sc.CSTM_NAME as name,
-		CASE WHEN 
-			suc.USR_CODE is not NULL 
-		then 
-			'checked' 
-		END as ifChecked 
-	from 
-		skf_cstm sc 
-	left JOIN 
-		skf_usr_cstm suc 
-	on 
-		sc.CSTM_CODE = suc.CSTM_CODE
-	and 
-		suc.USR_CODE=#{code}
-  </select>
+  
 </mapper>

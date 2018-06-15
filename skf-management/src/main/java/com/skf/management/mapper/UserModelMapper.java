@@ -93,19 +93,5 @@ public interface UserModelMapper {
 	 * @mbg.generated  Fri Jun 15 18:04:35 CST 2018
 	 */
 	int updateByPrimaryKey(UserModel record);
-
-	/**
-	 * list page
-	 * @param example
-	 * @return
-	 */
-	List<Object> listPage(Map<String,Integer> map);
 	
-	/**
-	 * list page count
-	 * @param example
-	 * @return
-	 */
-	int listPageCount();
-
 }

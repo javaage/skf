@@ -116,6 +116,7 @@
 			<columnOverride column="CMPT_TOTAL_VALUE" property="totalValue" />
 			<columnOverride column="CMPT_DEFECT_RANGE" property="defectRange" />
 			<columnOverride column="CMPT_DEFECT_TYPE" property="defectType" />
+			<columnOverride column="CMPT_RATIO" property="ratio" />
 		</table>
 
 		<table schema="public" tableName="SKF_BRNG" domainObjectName="BearingModel">

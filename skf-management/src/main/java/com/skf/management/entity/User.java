@@ -100,9 +100,9 @@ public class User extends UserModel {
 		
 		model.setName(user.getName());
 		model.setEmail(user.getEmail());
-		model.setAddress(user.getAddress());
+		model.setAddress(user.getAddress()==null?"":user.getAddress());
 		model.setCode(user.getCode());
-		model.setCompany(user.getCompany());
+		model.setCompany(user.getCompany()==null?"":user.getCompany());
 		model.setImg(user.getImg());
 		model.setLoginTime(user.getLoginTime());
 		model.setPassword(StringUtil.encodeBase64(user.getPassword()));

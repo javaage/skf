@@ -164,10 +164,11 @@ public class AlarmServiceImpl implements AlarmService {
 				result.put("dangerLevel", 0);
 				spectrogram.put("spectrogramTab", getSpectrogramTab(current));
 			}
-			
+
 			if (current != null && current.getTime() != null) {
 				description.put("val1", CalculateUtil.decimal(current.getValue(), 4));
-				description.put("val2", CalculateUtil.decimal(current.getValue() / current.getLevel(), 2));
+				description.put("val2", current.getLevel() == 0 ? 0
+						: CalculateUtil.decimal(current.getValue() / current.getLevel(), 2));
 				description.put("val3", current.getBpType());
 			} else {
 				description.put("val1", 0);
@@ -184,7 +185,7 @@ public class AlarmServiceImpl implements AlarmService {
 							&& tpoints.get(i).getTime().compareTo(current.getTime()) >= 0
 							&& tpoints.get(0).getTime().compareTo(current.getTime()) <= 0) {
 						times[i] = current.getTime().getTime();
-						values[i] = CalculateUtil.decimal(current.getValue(), 4).floatValue();
+						values[i] = CalculateUtil.decimal(tpoints.get(i).getValue(), 4).floatValue();
 						lineChart.put("markPointCoord", new Object[] { times[i], values[i] });
 						resetFlg = true;
 					} else {
@@ -202,9 +203,10 @@ public class AlarmServiceImpl implements AlarmService {
 			}
 			List<AlarmPoint> fpoints = mapper.getFreqData(schema, current.getTime(), request.getRowId());
 			if (!CollectionUtils.isEmpty(fpoints)) {
-				spectrogram.put("defectFreqOrder", CalculateUtil.decimal(fpoints.get(0).getDefectFreqOrder(), 2));
-				spectrogram.put("xAxisMax", fpoints.get(0).getEndFreq());
-				spectrogram.put("yAxisData", CalculateUtil.getRawDataList(fpoints.get(0).getRawData()));
+				spectrogram.put("defectFreqOrder", fpoints.get(0).getDefectFreqOrder());
+				spectrogram.put("xAxisMax", CalculateUtil.decimal(fpoints.get(0).getEndFreq(), 2));
+				spectrogram.put("yAxisData",
+						CalculateUtil.getRawDataList(fpoints.get(0).getRawData(), fpoints.get(0).getScaleFactor()));
 			} else {
 				spectrogram.put("defectFreqOrder", 0);
 				spectrogram.put("xAxisMax", 0);
@@ -247,9 +249,10 @@ public class AlarmServiceImpl implements AlarmService {
 			List<AlarmPoint> fpoints = mapper.getFreqData(schema, new Date(request.getMarkPointVal()),
 					request.getRowId());
 			if (!CollectionUtils.isEmpty(fpoints)) {
-				spectrogram.put("defectFreqOrder", CalculateUtil.decimal(fpoints.get(0).getDefectFreqOrder(), 2));
+				spectrogram.put("defectFreqOrder", fpoints.get(0).getDefectFreqOrder());
 				spectrogram.put("xAxisMax", fpoints.get(0).getEndFreq());
-				spectrogram.put("yAxisData", CalculateUtil.getRawDataList(fpoints.get(0).getRawData()));
+				spectrogram.put("yAxisData",
+						CalculateUtil.getRawDataList(fpoints.get(0).getRawData(), fpoints.get(0).getScaleFactor()));
 			} else {
 				spectrogram.put("defectFreqOrder", 0);
 				spectrogram.put("xAxisMax", 0);

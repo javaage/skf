@@ -23,6 +23,7 @@ import com.skf.scheduler.entity.ResponseData;
 import com.skf.scheduler.entity.SqlServerRequestData;
 import com.skf.scheduler.service.MysqlService;
 import com.skf.scheduler.service.SqlServerService;
+import com.skf.scheduler.util.CalculateUtil;
 import com.skf.scheduler.util.HttpUtil;
 
 @Component
@@ -112,7 +113,7 @@ public class Jobs {
 
 	// 创建监听Queue线程
 	private void createQueueListener() {
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < Constant.TASK_LISTENER_THREAD_SIZE; i++) {
 			threadPoolTaskScheduler.createThread(new Runnable() {
 				@Override
 				public void run() {
@@ -120,6 +121,13 @@ public class Jobs {
 						if (!requestQueue.isEmpty()) {
 							SqlServerRequestData ssrequest = requestQueue.poll();
 							if (ssrequest != null) {
+								ssrequest.setSpectraLines(ssrequest.getSpectraLines() + 1);
+								byte[] startZero = CalculateUtil.getRawData(new int[]{0});
+								byte[] rawData = ssrequest.getRawData();
+								byte[] rawDataNew = new byte[startZero.length + rawData.length];
+								System.arraycopy(startZero, 0, rawDataNew, 0, startZero.length);
+								System.arraycopy(rawData, 0, rawDataNew, startZero.length, rawData.length);
+								ssrequest.setRawData(rawDataNew);
 								List<MysqlRequestData> msrequests = mysqlService.getRequestDatas(ssrequest.getSchema(),
 										ssrequest.getIdNode());
 								if (!CollectionUtils.isEmpty(msrequests)) {
@@ -127,8 +135,11 @@ public class Jobs {
 										try {
 											if (Constant.ROTATION_SPEED_TYPE_SQLSERVER == msrequest
 													.getFreqRotationType()) {
-												msrequest.setFreqRotation(sqlServerService
-														.getFreqRotation(msrequest.getSchema(), msrequest.getIdNode()));
+												msrequest
+														.setFreqRotation(CalculateUtil.decimal(
+																sqlServerService.getFreqRotation(msrequest.getSchema(),
+																		msrequest.getIdNode()) * msrequest.getRatio(),
+																8).floatValue());
 											}
 											ResponseData response = HttpUtil.jsonPost(pythonServerURL, msrequest,
 													ssrequest);

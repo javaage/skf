@@ -46,6 +46,20 @@ public class NodeController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/leafpath/{schema}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object leafpath(HttpServletRequest request, @PathVariable("schema") String schema) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,nodeService.getNodeElements(schema));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/getNodeDatabase", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object getNodeDatabase(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -60,4 +74,16 @@ public class NodeController {
 		return map;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/value/{schema}/{nodeID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object getNodeValue(HttpServletRequest request, @PathVariable("schema") String schema, @PathVariable("nodeID") int nodeID) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,nodeService.getNodeValue(schema, nodeID));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
 }

@@ -69,10 +69,10 @@ public class Page {
         this.lastPage=this.allPageAmount;  
         if(this.currentPage *pageSize <allRowsAmount){  
             this.currentPageEndRow =this.currentPage*pageSize;  
-            this.currentPageStartRow =(this.currentPage-1)*pageSize+1;  
+            this.currentPageStartRow =(this.currentPage-1)*pageSize;  
         }else{  
             this.currentPageEndRow =this.allRowsAmount;  
-            this.currentPageStartRow =(this.allPageAmount-1)*pageSize+1;  
+            this.currentPageStartRow =(this.allPageAmount-1)*pageSize;  
             if(this.currentPageStartRow <0){  
                 this.currentPageStartRow=0;  
             }  

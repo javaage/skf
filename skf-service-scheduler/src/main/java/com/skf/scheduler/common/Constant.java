@@ -5,6 +5,7 @@ public final class Constant {
 	public static String PRE_SCHEMA = "skf_";
 	public static Boolean STOP_FLAG = Boolean.FALSE;
 	public static final int TASK_SCHEDULER_CORE_POOL_SIZE = 100;
+	public static final int TASK_LISTENER_THREAD_SIZE = 50;
 	public static final long DATABASE_FIXED_DELAY = 30 * 1000;
 	public static final long ALARM_FIXED_DELAY = 10 * 1000;
 	public static final int ROTATION_SPEED_TYPE_MYSQL = 1;

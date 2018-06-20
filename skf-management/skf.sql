@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     6/14/2018 5:12:14 PM                         */
+/* Created on:     6/20/2018 2:32:21 PM                         */
 /*==============================================================*/
 
 
@@ -71,6 +71,7 @@ create table SKF_CMPT
    CMPT_TOTAL_VALUE     float not null,
    CMPT_DEFECT_RANGE    float,
    CMPT_DEFECT_TYPE     int not null,
+   CMPT_RATIO           float,
    primary key (CMPT_CODE),
    unique key AK_KEY_CMPT_NAME (CMPT_NAME, CMPT_SNSR_CODE)
 )

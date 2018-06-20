@@ -8,6 +8,7 @@
 		<result column="CMPT_SPEED_TYPE" jdbcType="INTEGER" property="freqRotationType" />
 		<result column="CMPT_SCHEMA_NAME" jdbcType="VARCHAR" property="schema" />
 		<result column="CMPT_NODE_ID" jdbcType="INTEGER" property="idNode" />
+		<result column="CMPT_RATIO" jdbcType="FLOAT" property="ratio" />
 		<result column="BRNG_BPFI" jdbcType="FLOAT" property="bpfi" />
 		<result column="BRNG_BPFO" jdbcType="FLOAT" property="bpfo" />
 		<result column="BRNG_BSF" jdbcType="FLOAT" property="bsf" />
@@ -76,11 +77,12 @@
 		SELECT
 		c.CMPT_CODE,
 		c.CMPT_ROTATION_SPEED, c.CMPT_SPEED_TYPE, c.CMPT_SCHEMA_NAME,
-		c.CMPT_NODE_ID,
+		c.CMPT_NODE_ID,c.CMPT_RATIO,
 		b.BRNG_BPFI, b.BRNG_BPFO,b.BRNG_BSF,b.BRNG_FTF, null as
 		GEAR_MESHING_FREQUENCY,
 		c.CMPT_DANGER_LEVEL, c.CMPT_TOTAL_VALUE,
-		c.CMPT_DEFECT_RANGE,c.CMPT_CPCT_ID
+		CASE WHEN c.CMPT_DEFECT_TYPE = 1 THEN 0 ELSE c.CMPT_DEFECT_RANGE END AS CMPT_DEFECT_RANGE,
+		c.CMPT_CPCT_ID
 		FROM
 		SKF_CMPT c
 		LEFT JOIN SKF_SNSR s
@@ -97,11 +99,12 @@
 		(SELECT
 		c.CMPT_CODE, c.CMPT_ROTATION_SPEED, c.CMPT_SPEED_TYPE,
 		c.CMPT_SCHEMA_NAME,
-		c.CMPT_NODE_ID,
+		c.CMPT_NODE_ID,c.CMPT_RATIO,
 		null as BRNG_BPFI, null as
 		BRNG_BPFO, null as BRNG_BSF, null as BRNG_FTF,
 		g.GEAR_MESHING_FREQUENCY, c.CMPT_DANGER_LEVEL, c.CMPT_TOTAL_VALUE,
-		c.CMPT_DEFECT_RANGE,c.CMPT_CPCT_ID
+		CASE WHEN c.CMPT_DEFECT_TYPE = 1 THEN 0 ELSE c.CMPT_DEFECT_RANGE END AS CMPT_DEFECT_RANGE,
+		c.CMPT_CPCT_ID
 		FROM
 		SKF_CMPT c
 		LEFT JOIN SKF_SNSR s
@@ -178,6 +181,7 @@
 			ENV4X,
 			ENV5X,
 			BearingTotalValue,
+			TotalValue,
 			ifBearingTotalValueAlarm,
 			Score,
 			Class,
@@ -194,6 +198,7 @@
 			#{resp.ENV4X},
 			#{resp.ENV5X},
 			#{resp.BearingTotalValue},
+			#{resp.TotalValue},
 			#{resp.ifBearingTotalValueAlarm},
 			#{resp.score},
 			#{resp.clas},
@@ -329,6 +334,8 @@
 		`ENV4X` float NULL DEFAULT NULL,
 		`ENV5X` float NULL DEFAULT NULL,
 		`BearingTotalValue` float NULL DEFAULT
+		NULL,
+		`TotalValue` float NULL DEFAULT
 		NULL,
 		`ifBearingTotalValueAlarm` int(11) NULL DEFAULT NULL,
 		`Score`

@@ -16,6 +16,7 @@ public class ResponseData implements Serializable {
 	private float ENV4X;
 	private float ENV5X;
 	private float BearingTotalValue;
+	private float TotalValue;
 	private int ifBearingTotalValueAlarm;
 	private float score;
 	private String clas;
@@ -184,6 +185,20 @@ public class ResponseData implements Serializable {
 	 */
 	public void setBpType(String bpType) {
 		this.bpType = bpType;
+	}
+
+	/**
+	 * @return the totalValue
+	 */
+	public float getTotalValue() {
+		return TotalValue;
+	}
+
+	/**
+	 * @param totalValue the totalValue to set
+	 */
+	public void setTotalValue(float totalValue) {
+		TotalValue = totalValue;
 	}
 
 }

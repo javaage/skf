@@ -1,6 +1,6 @@
 {
     "ENGLISH": "English",
-    "CHINESE": "Chinese",
+    "CHINESE": "中文",
     "NEW_FACTORY" : "New Factory",
     "FACTORY_NAME" : "Factory Name",
     "FACTORY_ADDRESS" : "Factory Address",
@@ -82,6 +82,7 @@
     "EQUIPMENT_TYPE_DESCRIPTION": "Description",
     "ACTION": "Actions",
     "NO_DATA_FOUND": "No data found.",
+    "NO_COMPONENT_DATA_FOUND": "No component data found.",
     "ADD_COMPONENT": "Add Component",
     "ADD_SENSOR": "Add Sensor",
     "COMPONENT_TYPE": "Component Type",
@@ -96,10 +97,10 @@
     "ROTATION_SPEED": "Rotation Speed",
     "DANGER_LEVEL": "Danger Level",
     "SPEED_CHOICE": "Speed-frequency",
-    "CONSTANT_SPEED": "Constant Speed",
+    "CONSTANT_SPEED": "Constant Speed (HZ)",
     "BIND_SPEED": "Binding Speed",
     "DEFECT_TYPE": "Defect Frequency Range",
-    "RANDOM_VALUE": "Random Value",
+    "RANDOM_VALUE": "Intelligent Recommendation",
     "DEFECT_RANGE": "Define",
     "TOTAL_VALUE": "TOTAL Danger Level",
     "EDIT_SENSOR": "Edit Sensor",
@@ -120,6 +121,7 @@
     "FTF": "FTF",
     "POINT": "Points",
     "EDIT_COMPONENT": "Edit Component",
+    "ROTATION_SPEED_RATIO": "Rotation Speed Ratio",
 
     "ALARM_UNPROCESSED_TAB": "Unprocessed Warning",
     "ALARM_PROCESSING_TAB": "Warning in Processing",
@@ -140,11 +142,11 @@
     "ALARM_DETAIL_PANEL_DESCRIBE": "Description",
     "ALARM_DETAIL_PANEL_DESCRIBE1": "Bearing Condition is perfect.",
     "ALARM_DETAIL_PANEL_DESCRIBE2_1": "Bearing has early stage failure in ",
-    "ALARM_DETAIL_PANEL_DESCRIBE2_4": ", after correcting the spectrum, the average value of 5 times internal harmonics is ",
+    "ALARM_DETAIL_PANEL_DESCRIBE2_4": ", after spectrum fixing, the average defecting ENV value (1x~5x) is ",
     "ALARM_DETAIL_PANEL_DESCRIBE2_2": "gE.",
     "ALARM_DETAIL_PANEL_DESCRIBE2_3": "",
     "ALARM_DETAIL_PANEL_DESCRIBE3_1": "Be careful! Bearing has early stage failure in ",
-    "ALARM_DETAIL_PANEL_DESCRIBE3_4": ", after correcting the spectrum, the average value of 5 times internal harmonics is ",
+    "ALARM_DETAIL_PANEL_DESCRIBE3_4": ", after spectrum fixing, the average defecting ENV value (1x~5x) is ",
     "ALARM_DETAIL_PANEL_DESCRIBE3_2": "gE.",
     "ALARM_DETAIL_PANEL_DESCRIBE3_3": "",
     "ALARM_DETAIL_PANEL_RELEASE": "Released in",
@@ -163,10 +165,10 @@
     "ALARM_DETAIL_PANEL_DELETE_BUTTON": "Delete",
     "ALARM_DETAIL_PANEL_DANGER_LEVEL_BUTTON": "Danger Level",
     "ALARM_DANGER_LEVEL_POP1_TITLE": "Danger Level Update",
-    "ALARM_DANGER_LEVEL_POP1_BODY1": "Current risk factor is ",
-    "ALARM_DANGER_LEVEL_POP1_BODY2": ", total risk factor is ",
-    "ALARM_DANGER_LEVEL_POP1_BODY3": "if you want to change the risk factor to ",
-    "ALARM_DANGER_LEVEL_POP1_BODY4": ", total risk factor to ",
+    "ALARM_DANGER_LEVEL_POP1_BODY1": "Current bearing danger level is ",
+    "ALARM_DANGER_LEVEL_POP1_BODY2": ", total value danger level is ",
+    "ALARM_DANGER_LEVEL_POP1_BODY3": "if you want to change the bearing danger level to ",
+    "ALARM_DANGER_LEVEL_POP1_BODY4": ", total value danger level to ",
     "ALARM_DANGER_LEVEL_POP1_OK_BTN": "OK",
     "ALARM_DANGER_LEVEL_POP1_CANCEL_BTN": "Cancel",
 
@@ -204,8 +206,8 @@
     "GEAR_BSF_COEFFICIENT" : "BSF",
     "GEAR_FTF_COEFFICIENT" : "FTF",
 
-    "GEAR_ADD":"Add",
-    "GEAR_EDIT":"Edit",
+    "GEAR_ADD":"Add Gear Datebase",
+    "GEAR_EDIT":"Edit Gear Datebase",
     "GEAR_DELETE":"Delete",
     "GEAR_RETURN":"Return",
     "GEAR_SUBMIT":"Submit",
@@ -214,6 +216,7 @@
 
     "GEAR_ADD_TITLE":"Add",
     "GEAR_EDIT_TITLE":"Edit",
+    "GEAR_TITTLE":"Gear Datebase Management",
 
 
     "BEARING_NAME" : "Name",
@@ -226,13 +229,14 @@
     "BEARING_BSF_COEFFICIENT" : "BSF",
     "BEARING_FTF_COEFFICIENT" : "FTF",
 
-    "BEARING_ADD":"Add",
-    "BEARING_EDIT":"Edit",
+    "BEARING_ADD":"Add Bearing Datebase",
+    "BEARING_EDIT":"Edit Bearing Datebase",
     "BEARING_DELETE":"Delete",
     "BEARING_RETURN":"Return",
     "BEARING_SUBMIT":"Submit",
     "BEARING_CANCEL":"Cancel",
     "BEARING_FILTER":"Filter",
+    "BEARING_TITTLE":"Bearing Datebase Management",
 
     "BEARING_ADD_TITLE":"Add",
     "BEARING_EDIT_TITLE":"Edit",
@@ -246,7 +250,18 @@
     "USER_RESET_PASSWORD" : "Change Password",
     "USER_RESET_OLD__PASSWORD" : "Old Password",
     "USER_RESET_NEW_ONE_PASSWORD" : "New Password",
-    "USER_RESET_NEW_TWO_PASSWORD" : "Confirm Password"
+    "USER_RESET_NEW_TWO_PASSWORD" : "Confirm Password",
+
+    "USER_LIST" : "User Management",
+    "USER_ADD":"Add",
+    "USER_UPDATE":"Update Password",
+    "USER_DEL":"Delete",
+    "USER_SUBMIT":"Submit",
+    "USER_CANCEL":"Cancel",
+    "USER_EDIT":"Edit",
+    "USER_DELETE":"Delete",
+
+    "LOGIN_ACCOUNT":"Email/Phone Number"
 
 
 

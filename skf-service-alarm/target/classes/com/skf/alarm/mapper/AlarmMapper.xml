@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skf.alarm.mapper.AlarmMapper">
+	
+	<resultMap type="com.skf.alarm.model.Node" id="node">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<collection property="data"
+			select="com.skf.alarm.mapper.AlarmMapper.getCustomers" column="{oemCode=id,userCode=userCode}"></collection>
+	</resultMap>
+	
+	<resultMap type="com.skf.alarm.model.Leaf" id="leaf">
+		<result column="id" jdbcType="VARCHAR" property="id"/>
+		<result column="name" jdbcType="VARCHAR" property="name"/>
+	</resultMap>
+	
+	<resultMap type="com.skf.alarm.model.Alarm" id="alarm">
+		<result column="CMPT_CODE" jdbcType="VARCHAR" property="id"/>
+		<result column="QPMT_NAME" jdbcType="VARCHAR" property="deviceName"/>
+		<result column="SNSR_NAME" jdbcType="VARCHAR" property="sensorName"/>
+		<result column="CMPT_NAME" jdbcType="VARCHAR" property="partName"/>
+		<result column="ALRM_TYPE" jdbcType="INTEGER" property="type"/>
+		<result column="CLASS" jdbcType="INTEGER" property="status"/>
+		<result column="SCORE" jdbcType="FLOAT" property="score"/>
+		<result column="ALRM_TIME" jdbcType="VARCHAR" property="alarmTime"/>
+	</resultMap>
+	
+	<resultMap type="com.skf.alarm.model.AlarmPoint" id="alarmPoint">
+		<result column="TIME" jdbcType="TIMESTAMP" property="time"/>
+		<result column="VALUE" jdbcType="FLOAT" property="value"/>
+		<result column="LEVEL" jdbcType="FLOAT" property="level"/>
+		<result column="DANGER_LEVEL" jdbcType="FLOAT" property="dangerLevel"/>
+		<result column="TOTAL_VALUE_DANGER_LEVEL" jdbcType="FLOAT" property="totalValueDangerLevel"/>
+		<result column="BPFI" jdbcType="FLOAT" property="bpfi"/>
+		<result column="BPFO" jdbcType="FLOAT" property="bpfo"/>
+		<result column="BSF" jdbcType="FLOAT" property="bsf"/>
+		<result column="FTF" jdbcType="FLOAT" property="ftf"/>
+		<result column="MACHINE_FREQ" jdbcType="FLOAT" property="machineFreq"/>
+		<result column="END_FREQ" jdbcType="FLOAT" property="endFreq"/>
+		<result column="RAW_DATA" jdbcType="BLOB" property="rawData"/>
+		<result column="DEFECT_FREQ_ORDER" jdbcType="FLOAT" property="defectFreqOrder"/>
+		<result column="BP_TYPE" jdbcType="VARCHAR" property="bpType"/>
+	</resultMap>
+	
+	<sql id="conditions">
+		<if test="param.selectDevice != 'ALL'">
+			AND cs.OEM_CODE = #{param.selectDevice, jdbcType=VARCHAR}
+		</if>
+		<if test="param.selectSensor != 'ALL'">
+			AND cs.CSTM_CODE = #{param.selectSensor, jdbcType=VARCHAR}
+		</if>
+		<if test="param.selectStatus != 'ALL'">
+			AND a.STATUS = #{param.selectStatus, jdbcType=VARCHAR}
+		</if>
+		<if test="param.startScore != null">
+			AND a.SCORE &gt;= #{param.startScore, jdbcType=FLOAT}
+		</if>
+		<if test="param.endScore != null">
+			AND a.SCORE &lt;= #{param.endScore, jdbcType=FLOAT}
+		</if>
+		<if test="param.startTime != null and param.startTime != ''">
+			AND a.ALRM_TIME &gt;= str_to_date(#{param.startTime, jdbcType=VARCHAR}, '%Y-%m-%d')
+		</if>
+		<if test="param.endTime != null and param.endTime != ''">
+			AND a.ALRM_TIME &lt;= date_add(str_to_date(#{param.endTime, jdbcType=VARCHAR}, '%Y-%m-%d'), interval 1 day)
+		</if>
+		AND a.STATUS = #{param.warningType, jdbcType=INTEGER} 
+	</sql>
+
+	<select id="getAlarmCount" resultType="java.lang.Integer" 
+				parameterType="com.skf.alarm.model.AlarmQueryRequest">
+		SELECT COUNT( * )
+		FROM SKF_ALRM a
+		LEFT JOIN SKF_CMPT cm ON a.CMPT_CODE = cm.CMPT_CODE
+		LEFT JOIN SKF_SNSR s ON cm.CMPT_SNSR_CODE = s.SNSR_CODE
+		LEFT JOIN SKF_QPMT q ON s.SNSR_QPMT_CODE = q.QPMT_CODE
+		RIGHT JOIN (
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uo.USR_CODE
+			FROM SKF_USR_OEM uo
+			LEFT JOIN SKF_OEM o ON uo.OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			WHERE uo.USR_CODE = #{param.userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uc.USR_CODE
+			FROM SKF_USR_CSTM uc
+			LEFT JOIN SKF_CSTM c ON uc.CSTM_CODE = c.CSTM_CODE
+			LEFT JOIN SKF_OEM o ON c.CSTM_OEM_CODE = o.OEM_CODE 
+			WHERE uc.USR_CODE = #{param.userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, u.USR_CODE
+			FROM SKF_OEM o
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_USR u ON u.USR_CODE = #{param.userCode, jdbcType=VARCHAR}
+			WHERE u.USR_RL_ID = 1
+			) cs ON q.QPMT_CSTM_CODE = cs.CSTM_CODE
+		WHERE 1 = 1 
+		<include refid="conditions"></include>
+	</select>
+	
+	<select id="getDevice" resultMap="node">
+		SELECT 'ALL' as id, 'ALL' as name, #{userCode} as userCode
+		FROM dual 
+		UNION 
+		SELECT s.OEM_CODE as id, s.OEM_NAME as name, s.USR_CODE as userCode
+		FROM (
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uo.USR_CODE
+			FROM SKF_USR_OEM uo
+			LEFT JOIN SKF_OEM o ON uo.OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			WHERE uo.USR_CODE = #{userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uc.USR_CODE
+			FROM SKF_USR_CSTM uc
+			LEFT JOIN SKF_CSTM c ON uc.CSTM_CODE = c.CSTM_CODE
+			LEFT JOIN SKF_OEM o ON c.CSTM_OEM_CODE = o.OEM_CODE 
+			WHERE uc.USR_CODE = #{userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, u.USR_CODE
+			FROM SKF_OEM o
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_USR u ON u.USR_CODE = #{userCode, jdbcType=VARCHAR}
+			WHERE u.USR_RL_ID = 1
+			) s 
+		WHERE s.USR_CODE = #{userCode, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getCustomers" resultMap="leaf" parameterType="java.util.Map">
+		SELECT s.CSTM_CODE as id, s.CSTM_NAME as name
+		FROM (
+			SELECT 'ALL' as CSTM_CODE, 'ALL' as CSTM_NAME, 'ALL' as OEM_CODE, 'ALL' as OEM_NAME, USR_CODE
+			FROM SKF_USR WHERE USR_CODE = #{userCode, jdbcType=VARCHAR}
+			UNION 
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uo.USR_CODE
+			FROM SKF_USR_OEM uo
+			LEFT JOIN SKF_OEM o ON uo.OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			WHERE uo.USR_CODE = #{userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uc.USR_CODE
+			FROM SKF_USR_CSTM uc
+			LEFT JOIN SKF_CSTM c ON uc.CSTM_CODE = c.CSTM_CODE
+			LEFT JOIN SKF_OEM o ON c.CSTM_OEM_CODE = o.OEM_CODE
+			WHERE uc.USR_CODE = #{userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, u.USR_CODE
+			FROM SKF_OEM o
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_USR u ON u.USR_CODE = #{userCode, jdbcType=VARCHAR}
+			WHERE u.USR_RL_ID = 1
+		) s 
+		WHERE s.CSTM_NAME IS NOT NULL
+		<if test="oemCode != 'ALL'">
+			AND (s.OEM_CODE = #{oemCode, jdbcType=VARCHAR}
+			OR s.OEM_CODE = 'ALL')
+		</if>
+		AND s.USR_CODE = #{userCode, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getAlarms" parameterType="com.skf.alarm.model.AlarmQueryRequest"
+		resultMap="alarm">
+		SELECT a.CMPT_CODE, q.QPMT_NAME, s.SNSR_NAME, cm.CMPT_NAME as CMPT_NAME, a.ALRM_TYPE,
+			 a.CLASS, ROUND(a.SCORE, 2) AS SCORE, DATE_FORMAT(a.ALRM_TIME, '%Y-%m-%d %H:%i:%S') AS ALRM_TIME
+		FROM SKF_ALRM a
+		LEFT JOIN SKF_CMPT cm ON a.CMPT_CODE = cm.CMPT_CODE
+		LEFT JOIN SKF_SNSR s ON cm.CMPT_SNSR_CODE = s.SNSR_CODE
+		LEFT JOIN SKF_QPMT q ON s.SNSR_QPMT_CODE = q.QPMT_CODE
+		RIGHT JOIN (
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uo.USR_CODE
+			FROM SKF_USR_OEM uo
+			LEFT JOIN SKF_OEM o ON uo.OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			WHERE uo.USR_CODE = #{param.userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, uc.USR_CODE
+			FROM SKF_USR_CSTM uc
+			LEFT JOIN SKF_CSTM c ON uc.CSTM_CODE = c.CSTM_CODE
+			LEFT JOIN SKF_OEM o ON c.CSTM_OEM_CODE = o.OEM_CODE 
+			WHERE uc.USR_CODE = #{param.userCode, jdbcType=VARCHAR}
+			UNION
+			SELECT c.CSTM_CODE, c.CSTM_NAME, o.OEM_CODE, o.OEM_NAME, u.USR_CODE
+			FROM SKF_OEM o
+			LEFT JOIN SKF_CSTM c ON c.CSTM_OEM_CODE = o.OEM_CODE
+			LEFT JOIN SKF_USR u ON u.USR_CODE = #{param.userCode, jdbcType=VARCHAR}
+			WHERE u.USR_RL_ID = 1) cs 
+		ON q.QPMT_CSTM_CODE = cs.CSTM_CODE
+		WHERE 1 = 1 
+		<include refid="conditions"></include>
+		<if test="param.sortByRowType != null">
+			ORDER BY a.${param.sortByRowType}
+			<if test="!param.isSortByAsc">
+				DESC
+			</if>
+		</if>
+		limit ${param.startLine}, ${param.countLine}
+	</select>
+	
+	<select id="getSchema" resultType="java.lang.String">
+		SELECT CONCAT('skf_', SNSR_SCHEMA_NAME) FROM SKF_CMPT c
+		LEFT join skf_snsr s on c.CMPT_SNSR_CODE = s.SNSR_CODE
+		WHERE CMPT_CODE = #{componentCode, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getCountAlarmPoint" resultType="java.lang.Integer"
+				parameterType="com.skf.alarm.model.AlarmDetailRequest">
+		SELECT COUNT(*) 
+		FROM ${schemaName}.ALARM_ORGN a
+		WHERE a.MeasDate BETWEEN str_to_date(#{param.startDate, jdbcType=VARCHAR}, '%Y-%m-%d')
+			AND date_add(str_to_date(#{param.endDate, jdbcType=VARCHAR}, '%Y-%m-%d'), interval 1 day)
+		AND a.ComponentCode = #{param.rowId, jdbcType=VARCHAR}
+		AND a.BearingTotalValue &gt;= #{param.thresholdValue, jdbcType=FLOAT}
+	</select>
+	
+	<select id="getTrendPoints" resultMap="alarmPoint" 
+				parameterType="com.skf.alarm.model.AlarmDetailRequest">
+		SELECT t.TIME, t.VALUE
+		FROM (
+			SELECT @rownum:=@rownum+1 AS rownum, a.MeasDate as TIME, 
+				a.BearingTotalValue AS VALUE
+			FROM ${schemaName}.ALARM_ORGN a,
+				(SELECT @rownum:=0) r
+			WHERE a.MeasDate BETWEEN str_to_date(#{param.startDate, jdbcType=VARCHAR}, '%Y-%m-%d')
+				AND date_add(str_to_date(#{param.endDate, jdbcType=VARCHAR}, '%Y-%m-%d'), interval 1 day)
+			AND a.ComponentCode = #{param.rowId, jdbcType=VARCHAR}
+			AND a.BearingTotalValue &gt;= #{param.thresholdValue, jdbcType=FLOAT}
+			ORDER BY a.MeasDate) t
+		<if test="freq > 1">
+			WHERE 1 = t.rownum % #{freq,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="getALarmPoint" resultMap="alarmPoint" parameterType="java.lang.String">
+		SELECT a.ALRM_TIME AS TIME,
+			a.TOTAL_VALUE AS VALUE,
+			a.DANDER_LAVEL AS LEVEL, 
+			a.DEFECT_FREQ_ORDER AS DEFECT_FREQ_ORDER,
+			a.BP_TYPE AS BP_TYPE,
+			c.CMPT_DANGER_LEVEL AS DANGER_LEVEL,
+			c.CMPT_TOTAL_VALUE AS TOTAL_VALUE_DANGER_LEVEL,
+			b.BRNG_BPFO AS BPFO,
+			b.BRNG_BPFI AS BPFI,
+			b.BRNG_BSF AS BSF,
+			b.BRNG_FTF AS FTF,
+			g.GEAR_MESHING_FREQUENCY AS MACHINE_FREQ
+		FROM SKF_CMPT c
+		LEFT JOIN SKF_ALRM a ON a.CMPT_CODE = c.CMPT_CODE
+		LEFT JOIN SKF_BRNG b ON c.CMPT_BEARINGGEAR_CODE = b.BRNG_CODE AND c.CMPT_CPCT_ID = 1
+		LEFT JOIN SKF_GEAR g ON c.CMPT_BEARINGGEAR_CODE = g.GEAR_CODE AND c.CMPT_CPCT_ID = 2
+		WHERE c.CMPT_CODE = #{componentCode, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getFreqData" resultMap="alarmPoint">
+		SELECT a.EndFreq AS END_FREQ, a.RawData AS RAW_DATA, a.DefectFreqOrder AS DEFECT_FREQ_ORDER
+		FROM ${schemaName}.ALARM_ORGN a
+		WHERE a.MeasDate BETWEEN date_sub(#{time, jdbcType=TIMESTAMP}, interval 1 second)
+			AND date_add(#{time, jdbcType=TIMESTAMP}, interval 1 second)
+		AND a.ComponentCode = #{componentCode, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updateAlarmStatus">
+		UPDATE SKF_ALRM SET STATUS = #{status, jdbcType=INTEGER} 
+		WHERE CMPT_CODE = #{componentCode, jdbcType=VARCHAR}
+		AND ALRM_TYPE = #{alarmType, jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteAlarm">
+		DELETE FROM SKF_ALRM 
+		WHERE CMPT_CODE = #{componentCode, jdbcType=VARCHAR}
+		AND ALRM_TYPE = #{alarmType, jdbcType=INTEGER}
+	</delete>
+
+</mapper>

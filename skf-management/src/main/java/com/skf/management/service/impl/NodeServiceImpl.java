@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.skf.management.model.NodeElement;
 import com.skf.management.service.NodeService;
 import com.skf.management.sqlservermapper.NodeMapper;
 
@@ -50,5 +51,29 @@ public class NodeServiceImpl implements NodeService {
 			
 		}
 		return listString;
+	}
+
+	@Override
+	public List<NodeElement> getNodeElements(String schema) {
+		NodeMapper nodeMapper = sqlSession.getMapper(NodeMapper.class);
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("schema",schema);
+		List<Integer> ids =  nodeMapper.getLeafNodes(map);
+		List<NodeElement> elements = new ArrayList<NodeElement>();
+		for(int i=0;i<ids.size();i++){
+			NodeElement element = nodeMapper.getNodeNameTree(ids.get(i), schema);
+			elements.add(element);
+		}
+		return elements;
+	}
+
+	@Override
+	public float getNodeValue(String schema, int idNode) {
+		NodeMapper nodeMapper = sqlSession.getMapper(NodeMapper.class);
+		Float result = nodeMapper.getNodeValue(idNode, schema);
+//		if(result==null)
+//			return 0;
+//		else
+		return result;
 	}
 }

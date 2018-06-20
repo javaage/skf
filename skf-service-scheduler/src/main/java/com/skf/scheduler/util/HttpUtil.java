@@ -105,6 +105,7 @@ public class HttpUtil {
 			resp.setENV4X(Float.parseFloat(String.valueOf(map.get("ENV4X"))));
 			resp.setENV5X(Float.parseFloat(String.valueOf(map.get("ENV5X"))));
 			resp.setBearingTotalValue(Float.parseFloat(String.valueOf(map.get("BearingTotalValue"))));
+			resp.setTotalValue(Float.parseFloat(String.valueOf(map.get("TotalValue"))));
 			resp.setIfBearingTotalValueAlarm((int) map.get("ifBearingTotalValueAlarm"));
 			resp.setScore(Float.parseFloat(String.valueOf(map.get("Score"))));
 			resp.setClas(getClas((int) map.get("Class")));

@@ -17,6 +17,7 @@ public class MysqlRequestData implements Serializable {
 	private int freqRotationType;
 	private String schema;
 	private int idNode;
+	private float ratio;
 	private float bpfi;
 	private float bpfo;
 	private float bsf;
@@ -249,6 +250,20 @@ public class MysqlRequestData implements Serializable {
 				+ bpfi + ", bpfo=" + bpfo + ", bsf=" + bsf + ", ftf=" + ftf + ", machineFreq=" + machineFreq
 				+ ", dangerLevel=" + dangerLevel + ", totalValueDangerLevel=" + totalValueDangerLevel
 				+ ", defectFreqMonitoringRange=" + defectFreqMonitoringRange + ", componentType=" + componentType + "]";
+	}
+
+	/**
+	 * @return the ratio
+	 */
+	public float getRatio() {
+		return ratio;
+	}
+
+	/**
+	 * @param ratio the ratio to set
+	 */
+	public void setRatio(float ratio) {
+		this.ratio = ratio;
 	}
 
 }

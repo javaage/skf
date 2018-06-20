@@ -28,13 +28,13 @@ public class CalculateUtil {
 		return null;
 	}
 
-	public static double[] getRawDataList(byte[] rawData, double scale) {
+	public static float[] getRawDataList(byte[] rawData, float scale) {
 		if (rawData != null && rawData.length % 2 == 0) {
-			double[] data = new double[rawData.length / 2];
+			float[] data = new float[rawData.length / 2];
 			DecimalFormat df = new DecimalFormat("###############0.0000000#");
 			for (int i = 0, index = 0; i < rawData.length - 1; i++, index++) {
 				data[index] = new BigDecimal(df.format(((rawData[i] & 0xFF) | (rawData[++i] & 0xFF) << 8) * scale))
-						.doubleValue();
+						.floatValue();
 			}
 			return data;
 		}

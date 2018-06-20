@@ -210,6 +210,10 @@ public class UserServiceImpl implements UserService {
 	public void delete(String code) {
 		UserModelMapper userModelMapper = sqlSession
 				.getMapper(UserModelMapper.class);
+		
+		delUserOem(code, null);
+		delUserCustomer(code, null);
+		
 		userModelMapper.deleteByPrimaryKey(code);
 	}
 
@@ -267,7 +271,7 @@ public class UserServiceImpl implements UserService {
 
 		com.skf.management.model.UserOEMModelExample.Criteria criteria = delKey
 				.createCriteria();
-		if (userCode != null && !userCodes.equals(userCode)) {
+		if (userCode != null && !userCode.equals(userCode)) {
 			criteria.andUserCodeEqualTo(userCode);
 		} else if (userCodes != null && userCodes.size() > 0) {
 			criteria.andUserCodeIn(userCodes);
@@ -283,7 +287,7 @@ public class UserServiceImpl implements UserService {
 		UserCustomerModelExample customerExample = new UserCustomerModelExample();
 		com.skf.management.model.UserCustomerModelExample.Criteria criteria = customerExample
 				.createCriteria();
-		if (userCode != null && !userCodes.equals(userCode)) {
+		if (userCode != null && !userCode.equals(userCode)) {
 			criteria.andUserCodeEqualTo(userCode);
 		} else if (userCodes != null && userCodes.size() > 0) {
 			criteria.andUserCodeIn(userCodes);

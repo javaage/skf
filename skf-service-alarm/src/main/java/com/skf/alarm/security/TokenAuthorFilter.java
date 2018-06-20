@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.skf.alarm.service.UserService;
 
-@Service
+//@Service
 public class TokenAuthorFilter extends OncePerRequestFilter {
 	@Autowired
 	private UserService userService;

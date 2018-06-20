@@ -23,5 +23,6 @@ public final class Constant {
 	public static final String HTTP_MSG_ERROR_NOT_EXISTS = "NOT EXISTS";
 	public static final String HTTP_MSG_DUPLICATE_KEY_EXCEPTION = "DUPLICATE KEY";
 	public static final String HTTP_MSG_CHECK_PW_ERROR = "PASSWORD ERROR OR SAME";
+	public static final String HTTP_MSG_SUPERADMIN_DELETE_ERROR = "SUPERADMIN CAN'T DELETE";
 	
 }	

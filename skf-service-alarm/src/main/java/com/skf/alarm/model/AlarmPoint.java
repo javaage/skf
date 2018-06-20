@@ -27,6 +27,7 @@ public class AlarmPoint implements Serializable {
 	private byte[] rawData;
 	private float defectFreqOrder;
 	private String bpType;
+	private float scaleFactor;
 
 	/**
 	 * @return the time
@@ -236,6 +237,20 @@ public class AlarmPoint implements Serializable {
 	 */
 	public void setBpType(String bpType) {
 		this.bpType = bpType;
+	}
+
+	/**
+	 * @return the scaleFactor
+	 */
+	public float getScaleFactor() {
+		return scaleFactor;
+	}
+
+	/**
+	 * @param scaleFactor the scaleFactor to set
+	 */
+	public void setScaleFactor(float scaleFactor) {
+		this.scaleFactor = scaleFactor;
 	}
 
 }

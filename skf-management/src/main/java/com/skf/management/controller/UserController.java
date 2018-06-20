@@ -174,13 +174,7 @@ public class UserController {
 			map.put("image", users.get(0).getImg());
 		}else{
 			map.put("code", "fail");
-		}
-		
-//		map.put("code", "success");
-//		map.put("token", "123aa");
-//		map.put("username", "test");
-//		map.put("image", "");
-		
+		}	
 		return map;
 	}
 
@@ -190,9 +184,14 @@ public class UserController {
 	public Object delete(@PathVariable("code") String code) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			userService.delete(code);
-			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK,
-					Constant.HTTP_MSG_OK);
+			if(code.equals("1")){
+				map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR,
+						Constant.HTTP_MSG_SUPERADMIN_DELETE_ERROR);
+			}else{
+				userService.delete(code);
+				map = ResultHelper.createResult(Constant.HTTP_TYPE_OK,
+						Constant.HTTP_MSG_OK);
+			}		
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR,
 					Constant.HTTP_MSG_ERROR);

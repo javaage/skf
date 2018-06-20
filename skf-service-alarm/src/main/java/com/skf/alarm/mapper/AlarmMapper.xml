@@ -40,6 +40,7 @@
 		<result column="RAW_DATA" jdbcType="BLOB" property="rawData"/>
 		<result column="DEFECT_FREQ_ORDER" jdbcType="FLOAT" property="defectFreqOrder"/>
 		<result column="BP_TYPE" jdbcType="VARCHAR" property="bpType"/>
+		<result column="ScaleFactor" jdbcType="VARCHAR" property="scaleFactor"/>
 	</resultMap>
 	
 	<sql id="conditions">
@@ -215,13 +216,13 @@
 		SELECT t.TIME, t.VALUE
 		FROM (
 			SELECT @rownum:=@rownum+1 AS rownum, a.MeasDate as TIME, 
-				a.BearingTotalValue AS VALUE
+				a.TotalValue AS VALUE
 			FROM ${schemaName}.ALARM_ORGN a,
 				(SELECT @rownum:=0) r
 			WHERE a.MeasDate BETWEEN str_to_date(#{param.startDate, jdbcType=VARCHAR}, '%Y-%m-%d')
 				AND date_add(str_to_date(#{param.endDate, jdbcType=VARCHAR}, '%Y-%m-%d'), interval 1 day)
 			AND a.ComponentCode = #{param.rowId, jdbcType=VARCHAR}
-			AND a.BearingTotalValue &gt;= #{param.thresholdValue, jdbcType=FLOAT}
+			AND a.TotalValue &gt;= #{param.thresholdValue, jdbcType=FLOAT}
 			ORDER BY a.MeasDate) t
 		<if test="freq > 1">
 			WHERE 1 = t.rownum % #{freq,jdbcType=INTEGER}
@@ -249,7 +250,7 @@
 	</select>
 	
 	<select id="getFreqData" resultMap="alarmPoint">
-		SELECT a.EndFreq AS END_FREQ, a.RawData AS RAW_DATA, a.DefectFreqOrder AS DEFECT_FREQ_ORDER
+		SELECT a.EndFreq / a.FreqRotation AS END_FREQ, a.RawData AS RAW_DATA, a.DefectFreqOrder AS DEFECT_FREQ_ORDER, a.ScaleFactor
 		FROM ${schemaName}.ALARM_ORGN a
 		WHERE a.MeasDate BETWEEN date_sub(#{time, jdbcType=TIMESTAMP}, interval 1 second)
 			AND date_add(#{time, jdbcType=TIMESTAMP}, interval 1 second)

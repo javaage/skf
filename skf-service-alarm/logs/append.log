@@ -1,6 +1,0 @@
-2018-06-19 14:10:18,165,Starting Application on BAC1600981-PC with PID 7324 (E:\project\SKF\document\skf\skf-service-alarm\target\classes started by P9030576 in E:\project\SKF\document\skf\skf-service-alarm)
-2018-06-19 14:10:18,167,Running with Spring Boot v1.3.0.RELEASE, Spring v4.2.3.RELEASE
-2018-06-19 14:10:18,168,The following profiles are active: local
-2018-06-19 14:10:21,429,Initializing filter 'tokenAuthorFilter'
-2018-06-19 14:10:21,429,Filter 'tokenAuthorFilter' configured successfully
-2018-06-19 14:10:22,151,Started Application in 4.349 seconds (JVM running for 20.424)

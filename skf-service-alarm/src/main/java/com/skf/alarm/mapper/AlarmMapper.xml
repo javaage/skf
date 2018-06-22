@@ -197,7 +197,7 @@
 	
 	<select id="getSchema" resultType="java.lang.String">
 		SELECT CONCAT('skf_', SNSR_SCHEMA_NAME) FROM SKF_CMPT c
-		LEFT join skf_snsr s on c.CMPT_SNSR_CODE = s.SNSR_CODE
+		LEFT join SKF_SNSR s on c.CMPT_SNSR_CODE = s.SNSR_CODE
 		WHERE CMPT_CODE = #{componentCode, jdbcType=VARCHAR}
 	</select>
 	

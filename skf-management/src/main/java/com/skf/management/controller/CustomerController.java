@@ -1,6 +1,7 @@
 package com.skf.management.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,6 +73,21 @@ public class CustomerController {
 		try{
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
 					customerService.listByOwner(code));
+		} catch (Exception e) {
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
+			log.debug(e.getMessage());
+		}
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/listIn/{codes}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object listByOwners(HttpServletRequest request, @PathVariable("codes") List<String> codes) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try{
+			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
+					customerService.listByOwners(codes));
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());

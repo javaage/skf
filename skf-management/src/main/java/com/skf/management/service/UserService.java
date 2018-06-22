@@ -12,7 +12,7 @@ public interface UserService {
 	
 	Map<String, Object>  getCountByUserInfo(User model);
 	
-	Page listPage(int currentPage);
+	Page listPage(int currentPage,String loginUserCode);
 	
 	List<UserModel> listWithBLOBs();
 	

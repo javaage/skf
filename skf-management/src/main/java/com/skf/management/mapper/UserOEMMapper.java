@@ -1,12 +1,8 @@
 package com.skf.management.mapper;
 
-import com.skf.management.entity.UserOEMEntity;
-import com.skf.management.model.UserOEMModelExample;
-import com.skf.management.model.UserOEMModelKey;
-
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import com.skf.management.entity.UserOEMEntity;
 
 public interface UserOEMMapper {
 

@@ -6,7 +6,7 @@ import java.util.List;
 public class Page {  
     
     /*参数需要页面传入*/  
-    private Integer pageSize=5;//每页显式多少条记录  
+    private Integer pageSize=10;//每页显式多少条记录  
     private Integer currentPage=1;//当前页号  
       
     /*参数需要从数据查询*/  

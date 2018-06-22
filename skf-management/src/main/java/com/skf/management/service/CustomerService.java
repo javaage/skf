@@ -16,6 +16,8 @@ public interface CustomerService {
 	
 	List<CustomerModel> listByOwner(String code);
 	
+	List<CustomerModel> listByOwners(List<String> codes);
+	
 	void add(CustomerModel model);
 
 	CustomerModel getCustomerByCode(String code);

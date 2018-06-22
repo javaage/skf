@@ -82,13 +82,15 @@ public class UserController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/list/{currentPage}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Object list(@PathVariable("currentPage") int currentPage) {
+	@RequestMapping(value = "/list/{currentPage}/{loginUserCode}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Object list(@PathVariable("currentPage") int currentPage,
+			@PathVariable("loginUserCode") String loginUserCode
+			) {
 		Map<String, Object> map = new HashMap<String, Object>();
 				
 		try{
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_OK, Constant.HTTP_MSG_OK,
-					userService.listPage(currentPage));
+					userService.listPage(currentPage,loginUserCode));
 		} catch (Exception e) {
 			map = ResultHelper.createResult(Constant.HTTP_TYPE_ERROR, Constant.HTTP_MSG_ERROR);
 			log.debug(e.getMessage());
@@ -171,6 +173,7 @@ public class UserController {
 			map.put("token", new String(Base64.encodeBase64(users.get(0).getCode().getBytes("UTF-8")), "UTF-8"));
 			map.put("username", users.get(0).getName());
 			map.put("userRoleId", users.get(0).getRoleId());
+			map.put("userCode", users.get(0).getCode());
 			map.put("image", users.get(0).getImg());
 		}else{
 			map.put("code", "fail");

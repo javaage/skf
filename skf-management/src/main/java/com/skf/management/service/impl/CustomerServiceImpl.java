@@ -3,7 +3,6 @@ package com.skf.management.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,6 +65,15 @@ public class CustomerServiceImpl implements CustomerService {
 		CustomerModelExample example = new CustomerModelExample();
 		CustomerModelExample.Criteria criteria = example.createCriteria();
 		criteria.andOemCodeEqualTo(code);
+		return customerModelMapper.selectByExample(example);
+	}
+	
+	@Override
+	public List<CustomerModel> listByOwners(List<String> codes) {
+		CustomerModelMapper customerModelMapper =sqlSession.getMapper(CustomerModelMapper.class);
+		CustomerModelExample example = new CustomerModelExample();
+		CustomerModelExample.Criteria criteria = example.createCriteria();
+		criteria.andOemCodeIn(codes);
 		return customerModelMapper.selectByExample(example);
 	}
 

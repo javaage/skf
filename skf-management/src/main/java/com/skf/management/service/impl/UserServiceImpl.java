@@ -49,13 +49,28 @@ public class UserServiceImpl implements UserService {
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		
 		if(model.getName()!=null && !model.getName().equals("")){
-			resultMap.put("name", getCountByName(model));
+			int nameCount = getCountByName(model);
+			if(StringUtil.isValidUserName(model.getName())){
+				resultMap.put("name", nameCount);
+			}else{
+				resultMap.put("name", -99);
+			}
 		}
 		if(model.getPhone()!=null && !model.getPhone().equals("")){
-			resultMap.put("phone", getCountPhone(model));
+			int phoneCount = getCountPhone(model);
+			if(StringUtil.isChinaPhoneLegal(model.getPhone())){
+				resultMap.put("phone", phoneCount);
+			}else{
+				resultMap.put("phone", -99);
+			}
 		}
 		if(model.getEmail()!=null && !model.getEmail().equals("")){
-			resultMap.put("email", getCountByEmail(model));
+			int emailCount = getCountByEmail(model);
+			if(StringUtil.isValidEmail(model.getEmail())){
+				resultMap.put("email", emailCount);
+			}else{
+				resultMap.put("email", -99);
+			}
 		}
 		return resultMap;
 	}
@@ -72,7 +87,7 @@ public class UserServiceImpl implements UserService {
 	public	int getCountPhone(User model){
 		UserModelExample example = new UserModelExample();
 		
-		example.createCriteria().andPhoneEqualTo(model.getName());
+		example.createCriteria().andPhoneEqualTo(model.getPhone());
 		List<UserModel> resultPhoneList = getListSelectByExample(example);
 		
 		return resultPhoneList.size();
@@ -81,7 +96,7 @@ public class UserServiceImpl implements UserService {
 	public	int getCountByEmail(User model){
 		UserModelExample example = new UserModelExample();
 		
-		example.createCriteria().andEmailEqualTo(model.getName());
+		example.createCriteria().andEmailEqualTo(model.getEmail());
 		
 		List<UserModel> resultEmailList = getListSelectByExample(example);
 		
@@ -95,7 +110,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public Page listPage(int currentPage) {
+	public Page listPage(int currentPage,String loginUserCode) {
 		UserMapper userMapper = sqlSession
 				.getMapper(UserMapper.class);
 
@@ -107,9 +122,10 @@ public class UserServiceImpl implements UserService {
 		page.setCurrentPage(currentPage);
 		page.calculatePage();
 
-		Map<String, Integer> parmMap = new HashMap<String, Integer>();
+		Map<String, Object> parmMap = new HashMap<String, Object>();
 		parmMap.put("stratRow", page.getCurrentPageStartRow());
 		parmMap.put("endRow", page.getCurrentPageEndRow());
+		parmMap.put("loginUserCode", loginUserCode);
 
 		List<Object> data = userMapper.listPage(parmMap);
 
@@ -146,6 +162,7 @@ public class UserServiceImpl implements UserService {
 		UserCustomerMapper userCustomerMapper = sqlSession
 				.getMapper(UserCustomerMapper.class);
 		
+		
 		UserModel model = userModelMapper.selectByPrimaryKey(code);
 
 		User user = User.newUserFormModel(model);
@@ -161,6 +178,8 @@ public class UserServiceImpl implements UserService {
 
 		return user;
 	}
+
+	
 
 	public void update(UserModel model) throws Exception {
 		UserModelMapper userModelMapper = sqlSession
@@ -271,7 +290,7 @@ public class UserServiceImpl implements UserService {
 
 		com.skf.management.model.UserOEMModelExample.Criteria criteria = delKey
 				.createCriteria();
-		if (userCode != null && !userCode.equals(userCode)) {
+		if (userCode != null && !userCode.equals("")) {
 			criteria.andUserCodeEqualTo(userCode);
 		} else if (userCodes != null && userCodes.size() > 0) {
 			criteria.andUserCodeIn(userCodes);
@@ -287,7 +306,7 @@ public class UserServiceImpl implements UserService {
 		UserCustomerModelExample customerExample = new UserCustomerModelExample();
 		com.skf.management.model.UserCustomerModelExample.Criteria criteria = customerExample
 				.createCriteria();
-		if (userCode != null && !userCode.equals(userCode)) {
+		if (userCode != null && !userCode.equals("")) {
 			criteria.andUserCodeEqualTo(userCode);
 		} else if (userCodes != null && userCodes.size() > 0) {
 			criteria.andUserCodeIn(userCodes);

@@ -69,7 +69,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 		if(searchEquipment.getEquipmentTypeCode()!=null && !searchEquipment.getEquipmentTypeCode().isEmpty())
 			criteria.andEquipmentTypeCodeEqualTo(searchEquipment.getEquipmentTypeCode());
 		if(searchEquipment.getName()!=null && !searchEquipment.getName().isEmpty())
-			criteria.andNameLike(searchEquipment.getName());
+			criteria.andNameLike('%' + searchEquipment.getName() + '%');
 		if(searchEquipment.getStartDate()!=null)
 			criteria.andSetupDateGreaterThanOrEqualTo(searchEquipment.getStartDate());
 		if(searchEquipment.getEndDate()!=null )

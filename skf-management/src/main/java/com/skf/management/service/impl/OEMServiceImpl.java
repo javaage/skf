@@ -76,7 +76,11 @@ public class OEMServiceImpl implements OEMService {
 			oemJoin.setOEMModel(oemModel);
 			List<CustomerJoin> listCustomerJoin = customerService.listTree(oemModel.getCode(), oemList, cstmList);
 			
-			if(oemList.contains(oemJoin.getCode()) || listCustomerJoin.size() > 0){
+			if(oemList.contains(oemJoin.getCode())){
+				oemJoin.setHasPrivilege(true);
+				oemJoin.setListCustomerJoin(customerService.listTree(oemModel.getCode()));
+				listOEMJoin.add(oemJoin);
+			}else if(listCustomerJoin.size() > 0){
 				oemJoin.setHasPrivilege(true);
 				oemJoin.setListCustomerJoin(listCustomerJoin);
 				listOEMJoin.add(oemJoin);

@@ -188,8 +188,8 @@ public class UserServiceImpl implements UserService {
 			String passWord = StringUtil.decodeBase64(userModel.getPassword());
 			if(passWord.equals(user.getPasswordOne())){
 				return false;
-			}else if(!passWord.equals(user.getPassword())){
-				return false;
+//			}else if(!passWord.equals(user.getPassword())){
+//				return false;
 			}else{
 				model.setPassword(StringUtil.encodeBase64(user.getPasswordOne()));
 				update(model);

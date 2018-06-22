@@ -2,9 +2,9 @@ package com.skf.management;
 
 import javax.sql.DataSource;
 
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
+@MapperScan(basePackages = {"com.skf.management.**mapper"})
 public class AppConfiguration {
 
 //	@Bean
@@ -60,7 +61,8 @@ public class AppConfiguration {
 	public SqlSessionTemplate mysqlSession(@Qualifier("mysql") DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
-		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.mapper");
+		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.mapper");		
+		
 		factoryBean.getObject().getConfiguration().setLogPrefix("dao.");
 		return new SqlSessionTemplate(factoryBean.getObject());
 	}
@@ -71,38 +73,8 @@ public class AppConfiguration {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
 		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.sqlservermapper");
+		
 		factoryBean.getObject().getConfiguration().setLogPrefix("dao.");
 		return new SqlSessionTemplate(factoryBean.getObject());
 	}
-	
-//	@Primary
-//	@Bean
-//	@Qualifier("mysqlsession")
-//	public SqlSession mysqlSession(@Qualifier("mysql") DataSource dataSource) throws Exception{
-//		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-//		factoryBean.setDataSource(dataSource);
-//		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.mapper");
-//		factoryBean.getObject().getConfiguration().setLogPrefix("dao.");
-//		return factoryBean.getObject().openSession();
-//	}
-//	
-//	@Bean
-//	@Qualifier("sqlserversession")
-//	public SqlSession sqlserverSession(@Qualifier("sqlserver") DataSource dataSource) throws Exception{
-//		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-//		factoryBean.setDataSource(dataSource);
-//		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.sqlservermapper");
-//		factoryBean.getObject().getConfiguration().setLogPrefix("dao.");
-//		return factoryBean.getObject().openSession();
-//	}
-	
-//	@Bean
-//	public SqlSessionTemplate sqlserverSessionTemplate() throws Exception {
-//		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-//		factoryBean.setDataSource(sqlserverDataSource);
-//		factoryBean.getObject().getConfiguration().setLogPrefix("dao.");
-//		return factoryBean.getObject();
-//		SqlSessionTemplate template = new SqlSessionTemplate(sqlserverSessionFactory());
-//		return template;
-//	}
 }

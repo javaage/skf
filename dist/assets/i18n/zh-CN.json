@@ -97,7 +97,7 @@
     "ROTATION_SPEED": "转速频率",
     "DANGER_LEVEL": "危险等级参数",
     "SPEED_CHOICE": "转速频率选择",
-    "CONSTANT_SPEED": "恒定转速 (HZ)",
+    "CONSTANT_SPEED": "恒定转速 (Hz)",
     "BIND_SPEED": "绑定转速",
     "DEFECT_TYPE": "缺陷频率检测范围",
     "RANDOM_VALUE": "智能推荐",
@@ -240,10 +240,11 @@
     "BEARING_ADD_TITLE":"添加轴承类型",
     "BEARING_EDIT_TITLE":"编辑轴承类型",
     "BEARING_TITTLE":"轴承数据库管理",
+    "BEARING_SEARCH_BY_NUMBER": "序列号搜索",
 
     "PASSWORD":"密码",
-    "LOGIN_EMPTY":"用户名和密码不能为空",
-    "LOGIN_WRONG":"用户名或密码不正确",
+    "LOGIN_EMPTY":"邮箱/手机号码和密码不能为空",
+    "LOGIN_WRONG":"邮箱/手机号码或密码不正确",
     "LOGIN":"登录",
 
     "USER_RESET_PASSWORD" : "修改密码",

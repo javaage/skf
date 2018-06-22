@@ -39,7 +39,7 @@
 		SKF_USR_CSTM suc 
 	on 
 		sc.CSTM_CODE = suc.CSTM_CODE
-	where 
+	and 
 		suc.USR_CODE=#{code}
   </select>
 </mapper>

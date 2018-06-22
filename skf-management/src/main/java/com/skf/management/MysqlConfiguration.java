@@ -16,7 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@MapperScan(basePackages = {"com.skf.management.mapper"})
+@MapperScan(basePackages = {"com.skf.management.mapper"}, sqlSessionTemplateRef="mysqlsession")
 public class MysqlConfiguration {
 	
 	@Primary
@@ -30,7 +30,7 @@ public class MysqlConfiguration {
 	@Primary
 	@Bean
 	@Qualifier("mysqlsession")
-	public SqlSessionTemplate mysqlSession(@Qualifier("mysql") DataSource dataSource) throws Exception{
+	public SqlSessionTemplate mysqlsession(@Qualifier("mysql") DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
 		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.mapper");		

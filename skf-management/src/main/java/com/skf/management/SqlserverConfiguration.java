@@ -16,7 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@MapperScan(basePackages = {"com.skf.management.sqlservermapper"})
+@MapperScan(basePackages = {"com.skf.management.sqlservermapper"}, sqlSessionTemplateRef="sqlserversession")
 public class SqlserverConfiguration {
 	
 	@Bean
@@ -28,7 +28,7 @@ public class SqlserverConfiguration {
 	
 	@Bean
 	@Qualifier("sqlserversession")
-	public SqlSessionTemplate sqlserverSession(@Qualifier("sqlserver") DataSource dataSource) throws Exception{
+	public SqlSessionTemplate sqlserversession(@Qualifier("sqlserver") DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
 		factoryBean.getObject().getConfiguration().addMappers("com.skf.management.sqlservermapper");

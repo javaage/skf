@@ -16,7 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@MapperScan(basePackages = {"com.skf.management.**mapper"})
+@MapperScan(basePackages = {"com.skf.management.mapper","com.skf.management.sqlservermapper"})
 public class AppConfiguration {
 
 //	@Bean

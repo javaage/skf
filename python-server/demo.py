@@ -127,8 +127,8 @@ def test_ms_func():
         DefectFreqMonitoringRange = request.get_json()['DefectFreqMonitoringRange']
         logging.debug(DefectFreqMonitoringRange)
         
-        DefectFreqOrder, ENV1X, ENV2X, ENV3X, ENV4X, ENV5X, BearingTotalValue, ifBearingTotalValueAlarm, Score, Class = GFL.MSFunction(EndFreq, SpectraLines, FreqRotation, ScaleFactor, RawData, BP, BearingDangerLevel, TotalValueDangerLevel, DefectFreqMonitoringRange)
-        print(DefectFreqOrder, ENV1X, ENV2X, ENV3X, ENV4X, ENV5X, BearingTotalValue, ifBearingTotalValueAlarm, Score, Class)
+        DefectFreqOrder, ENV1X, ENV2X, ENV3X, ENV4X, ENV5X, BearingTotalValue, ifBearingTotalValueAlarm, Score, Class, TotalValue = GFL.MSFunction(EndFreq, SpectraLines, FreqRotation, ScaleFactor, RawData, BP, BearingDangerLevel, TotalValueDangerLevel, DefectFreqMonitoringRange)
+        #print(DefectFreqOrder, ENV1X, ENV2X, ENV3X, ENV4X, ENV5X, BearingTotalValue, ifBearingTotalValueAlarm, Score, Class)
         
         result = {}
         result["DefectFreqOrder"] = DefectFreqOrder
@@ -137,10 +137,11 @@ def test_ms_func():
         result["ENV3X"] = ENV3X
         result["ENV4X"] = ENV4X
         result["ENV5X"] = ENV5X
-        result["BearingTotalValue"] = BearingTotalValue
+        result["BearingTotalValue"] = BearingTotalValue		
         result["ifBearingTotalValueAlarm"] = ifBearingTotalValueAlarm
         result["Score"] = Score
         result["Class"] = Class
+        result["TotalValue"] = TotalValue
         logging.debug(result)
         return json.dumps(result)
 

@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>{{oem.code? ('EDIT_OEM' | translate) : ('ADD_OEM' | translate)}}</nb-card-header>
+      <nb-card-body>
+        <form #ngForm="ngForm" (ngSubmit)="submitOEM()" novalidate role="form">
+          <div class="row">
+            <div class="col-lg-3 form-group">
+              <div class="row-center img-container3" [ngClass]="imgValid? '':'border-danger'">
+                <img class="img-scale" style="cursor: pointer;" id="imgOEM" (click)="chooseFile()">
+              </div>
+              <div class="row-center" style="cursor: pointer;" (click)="chooseFile()">
+                <span class="menu-icon nb-plus" style="margin-top: 50px;font-size: 2rem;" *ngIf="!oem.img"></span>
+                <span class="menu-icon nb-edit" style="font-size: 2rem;" *ngIf="oem.img"></span>
+                <input type="file" #file id="file" (change)="getFilePath()" accept="image/jpg,image.png" style="filter:alpha(opacity=0);opacity:0;width: 0;height: 0;"
+                />
+              </div>
+              <div class="row-center">
+                <div style="text-align: center">
+                  <label class="col-form-label">{{'PICTURE' | translate}}
+                    <span class="danger"> * </span>
+                    <br>
+                    <span> (L : H &lt; 8; size &lt; 2M) </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-9">
+              <div class="form-group row">
+                <label for="inputName" class="col-lg-2 col-form-label">{{'NAME' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="text" [(ngModel)]="oem.name" name="name" class="form-control" id="inputName" placeholder="{{'NAME_UNIQUE' | translate}}"
+                    (change)="changeName()" #nameControl="ngModel" required [ngClass]="!nameControl.touched? '' : nameControl.invalid || isDuplicated ? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputCountry" class="col-lg-2 col-form-label">{{'COUNTRY' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="text" [(ngModel)]="oem.country" name="country" class="form-control" id="inputCountry"
+                    placeholder="{{'COUNTRY' | translate}}" required maxlength="50" #countryControl="ngModel" [ngClass]="!countryControl.touched? '' : countryControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputState" class="col-lg-2 col-form-label">{{'STATE' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="text" [(ngModel)]="oem.state" name="state" class="form-control" id="inputState" placeholder="{{'STATE' | translate}}"
+                    required maxlength="50" #stateControl="ngModel" [ngClass]="!stateControl.touched? '' : stateControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputCity" class="col-lg-2 col-form-label">{{'CITY' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="text" [(ngModel)]="oem.city" name="city" class="form-control" id="inputCity" placeholder="{{'CITY' | translate}}"
+                    required maxlength="50" #cityControl="ngModel" [ngClass]="!cityControl.touched? '' : cityControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputAddress" class="col-lg-2 col-form-label">{{'ADDRESS' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="text" [(ngModel)]="oem.address" name="address" class="form-control" id="inputAddress"
+                    placeholder="{{'ADDRESS' | translate}}" required maxlength="50" #addressControl="ngModel" [ngClass]="!addressControl.touched? '' : addressControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputUrl" class="col-lg-2 col-form-label">{{'WEB_LINK' | translate}}</label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="url" [(ngModel)]="oem.url" name="url" class="form-control" id="inputUrl" placeholder="{{'WEB_LINK' | translate}}"
+                    maxlength="50" #urlControl="ngModel" [ngClass]="!urlControl.touched? '' : urlControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputIntroduction" class="col-lg-2 col-form-label">{{'INTRODUCTION' | translate}}</label>
+                <div class="col-lg-9">
+                  <input [readonly]="userRoleId!=1" type="text" [(ngModel)]="oem.introduction" name="introduction" class="form-control" id="inputIntroduction"
+                    placeholder="{{'INTRODUCTION' | translate}}" maxlength="1024" #introductionControl="ngModel" [ngClass]="!introductionControl.touched? '' : introductionControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-lg-3 col-lg-2">
+              <button type="submit" class="btn btn-success" style="text-transform: capitalize;" [disabled]="!ngForm.form.valid || !oem.img || isSubmit || !imgValid">{{'SUBMIT' | translate}}</button>
+            </div>
+            <div class="col-lg-2">
+              <button type="button" (click)="cancel()" class="btn btn-cancle"  style="text-transform: capitalize;">{{'CANCEL' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

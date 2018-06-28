@@ -1,0 +1,80 @@
+<nb-card>
+  <nb-card-header>
+    {{'USER_LIST' | translate}}
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="search-bar" style="float: right; padding-bottom: 5px; padding-right: 21px;">
+      <button type="button" (click)="openAddPage()" class="btn" style="text-transform: none;background-color: #01b27c;font-size: 16px;">
+        <i class="glyphicon glyphicon-plus">
+        </i> {{'USER_ADD' | translate}}
+      </button>
+      <!--
+    <button type="button" (click)="onClickChangePW()" class="btn" style="text-transform: none;background-color: #01b27c;font-size: 16px;">
+      <i class="glyphicon glyphicon-plus">
+      </i> {{'USER_UPDATE' | translate}}
+    </button>
+
+    <button type="button" (click)="onClickDeletes()" class="btn btn-sm btn-danger">
+      <i class="glyphicon glyphicon-plus">
+      </i> {{'USER_DEL' | translate}}
+    </button>
+    -->
+    </div>
+    <div class="card-body">
+      <table class="table cus-table">
+        <thead>
+        <tr style="background-color: #dee2e6;">
+          <!--
+            <th scope="col">
+              <input type="checkbox"  (click)="checkedAll($event.target.checked)" [(ngModel)]="master">
+            </th>
+            <th scope="col">{{'USER_TABLE_CODE' | translate}}</th>
+            <th scope="col"></th>
+          -->
+          <th scope="col">{{'USER_TABLE_NAME' | translate}}</th>
+          <th scope="col">{{'USER_TABLE_EMAIL' | translate}}</th>
+          <th scope="col">{{'USER_TABLE_PHONE' | translate}}</th>
+          <th scope="col">{{'USER_TABLE_ROLENAME' | translate}}</th>
+          <th scope="col">{{'USER_TABLE_COMPANY' | translate}}</th>
+          <th scope="col">{{'USER_TABLE_ADDRESS' | translate}}</th>
+          <th scope="col">{{'USER_TABLE_LOGINTIME' | translate}}</th>
+          <th scope="col">{{'ACTION' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <ng-container *ngFor="let item of page.items; let ind = index">
+          <tr
+            class="alarm-info"
+            data-toggle="collapse"
+            data-target="#idcol0">
+            <!--
+           <th scope="row">
+             <input type="checkbox" *ngIf="item.code != '1'"   (click)="selectUserCheckbox($event.target.checked,item.code)"  [(checked)]="master">
+           </th>
+
+           <th>{{item.code}}</th>
+           -->
+
+            <td>{{item.name}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.phone}}</td>
+            <td>{{item.roleName}}</td>
+            <td>{{item.company}}</td>
+            <td>{{item.address}}</td>
+            <td>{{ item.loginTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td><a *ngIf="loginUserRoleId == '1'" class="ng2-smart-action ng2-smart-action-custom-custom nb-edit" href="#" (click)="onClickEdit(item)" style="color:#01b27c;font-size: 16px;"
+                   data-toggle="collapse" data-target="#idcol0">{{'USER_EDIT' | translate}}</a>
+              <a *ngIf="loginUserCode == '1' && item.code!='1'" class="ng2-smart-action ng2-smart-action-custom-custom nb-trash" href="#" (click)="onClickDelete(item)"
+                 data-toggle="collapse" style="color:#f55b63;font-size: 16px;" data-target="#idcol0">{{'USER_DELETE' | translate}}</a>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+      <pagination [totalPage]="page.allPageAmount" [currentPage]="page.currentPage-1"   (pageChange)="pageChange($event)"></pagination>
+
+    </div>
+  </nb-card-body>
+</nb-card>

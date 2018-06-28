@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>{{user.code? ('EDIT_USER' | translate) : ('ADD_USER' | translate)}}</nb-card-header>
+      <nb-card-body>
+        <div style=" margin-bottom: 5px;width:100%;text-align: center">
+          <span style="color:red;margin-left: 25px;">
+            {{errorMsg.name}}&nbsp;&nbsp;
+            {{errorMsg.img}}&nbsp;&nbsp;
+            <!--{{errorMsg.address}}-->
+            {{errorMsg.password}}&nbsp;&nbsp;
+            {{errorMsg.email}}&nbsp;&nbsp;
+            {{errorMsg.phone}}&nbsp;&nbsp;
+            {{errorMsg.roleId}}&nbsp;&nbsp;
+            <!--{{errorMsg.company}}-->
+         </span>
+       </div>
+       <form  #ngForm="ngForm" novalidate role="form" (submit)="submitUser()">
+         <div class="row">
+           <div class="col-lg-3 form-group">
+             <label for="divImg" class="col-form-label" style="display:none;">{{'PICTURE' | translate}}</label>
+             <div>
+               <div id="divImg" class="form-canvas-pop" style="cursor: pointer;text-align: center;vertical-align: middle;margin-left: 4px;margin: auto;" (click)="chooseFile()">
+                 <div class="img_div_setting">
+                   <img class="img_setting" id="imgUser" (change)="userCheckFun('img')"  [ngClass]="imgValid? '':'img_error'">
+                 </div>
+
+                 <span class="menu-icon nb-plus" style="margin-top: 50px;font-size: 2rem;" *ngIf="!user.img"></span>
+                 <span class="menu-icon nb-edit" style="font-size: 2rem;" *ngIf="user.img"></span>
+               </div>
+               <input type="file" #file id="file" (change)="getFilePath()" accept="image/jpg,image.png" style="filter:alpha(opacity=0);opacity:0;width: 0;height: 0;"/>
+               <br>
+               <div style="text-align: center">
+                 <label class="col-form-label" >{{'PICTURE' | translate}}<span class="danger"> * </span><br><span> (size &lt; 2M) </span></label>
+               </div>
+             </div>
+           </div>
+           <div class="col-lg-9">
+             <div class="form-group row">
+               <label for="inputName" class="col-lg-2 col-form-label">{{'USER_NAME' | translate}}<span class="danger"> * </span></label>
+               <div class="col-lg-9">
+                 <input type="text" [(ngModel)]="user.name" name="name" class="form-control" id="inputName" (change)="userCheckFun('name')" placeholder="{{'USER_NAME' | translate}}" #nameControl="ngModel" required
+                        [ngClass]="!nameControl.touched? '' :   nameValid ? 'form-control-success':'form-control-danger'">
+                 <input type="hidden" [(ngModel)]="user.code" name="code"  id="inputCode" placeholder="{{'USER_NAME' | translate}}">
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="inputEmail" class="col-lg-2 col-form-label">{{'USER_EMAIL' | translate}}<span class="danger"> * </span></label>
+               <div class="col-lg-9">
+                 <input type="email" [(ngModel)]="user.email" name="email" class="form-control" id="inputEmail" (change)="userCheckFun('email')" placeholder="{{'USER_EMAIL' | translate}}" #emailControl="ngModel"
+                        [ngClass]="!emailControl.touched? '' : !emailValid? 'form-control-danger' : 'form-control-success'" required maxlength="50">
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="inputPhone" class="col-lg-2 col-form-label">{{'USER_PHONE' | translate}}<span class="danger"> * </span></label>
+               <div class="col-lg-9">
+                 <input type="phone" [(ngModel)]="user.phone"  name="phone" class="form-control" id="inputPhone" (change)="userCheckFun('phone')" placeholder="{{'USER_PHONE' | translate}}" #phoneControl="ngModel"
+                        [ngClass]="!phoneControl.touched? '' : !phoneValid? 'form-control-danger' : 'form-control-success'"  required maxlength="50">
+                 </div>
+             </div>
+             <div class="form-group row">
+               <label for="inputPassword" class="col-lg-2 col-form-label">{{'USER_PASSWORD' | translate}}<span class="danger"> * </span></label>
+               <div class="col-lg-9">
+                 <input type="password" [disabled]="user.code" [(ngModel)]="user.password" name="password" class="form-control" id="inputPassword"  (change)="userCheckFun('password')"  placeholder="{{'USER_PASSWORD' | translate}}"  required maxlength="50" #passwordControl="ngModel" [ngClass]="!passwordControl.touched? '' : passwordControl.invalid? 'form-control-danger' : 'form-control-success'">
+                 <div class="reset-password-bt">
+
+                   <button *ngIf="user.code"    type="button" (click)="onClickChangePW(user.code)" class="btn" style="text-transform: none;background-color: #01b27c;font-size: 16px;">
+                     <i class="glyphicon glyphicon-plus">
+                     </i> {{'USER_UPDATE' | translate}}
+                   </button>
+
+                   <!--
+                   <button type="button" (click)="resetPassword(user.code)" class="btn btn-success" style="text-transform: none;">
+                     <i class="glyphicon glyphicon-plus">
+                     </i> {{'RESET_PASSWORD' | translate}}
+                   </button>
+                   -->
+
+                 </div>
+               </div>
+             </div>
+             <div class="form-group row" >
+               <label for="inputRole" class="col-lg-2 col-form-label">{{'USER_ROLE' | translate}}<span class="danger"> * </span></label>
+               <div class="col-lg-9">
+                 <select class="form-control" id="inputRole" [(ngModel)]="user.roleId" [ngModelOptions]="{standalone: true}" (change)="userCheckFun('roleId')"  #rollControl="ngModel" [ngClass]="!rollControl.touched? '' : rollControl.invalid? 'form-control-danger' : 'form-control-success'">
+                   <option *ngFor="let item of roles" [value]='item.code'>{{item.name | translate}}</option>
+                 </select>
+               </div>
+             </div>
+             <div class="form-group row" *ngIf="user.roleId == '2'">
+               <label for="inputOEMs" class="col-lg-2 col-form-label">{{'OEM' | translate}}</label>
+               <div class="col-lg-9">
+                         <span id="inputOEMs" class="checkbox-inline" *ngFor="let item of oems" style="padding-right: 30px;display:inline-block;word-wrap:break-word;white-space:normal;">
+                             <input type="checkbox" name="oems" ng-model="user.oemGroup" value="{{item.code}}" (click)="selectOemCheckbox($event.target.checked,item.code)" [checked]="item.ifChecked=='checked'"> {{item.name}}
+                   </span>
+               </div>
+             </div>
+             <div class="form-group row" *ngIf="user.roleId == '2'">
+               <label for="inputCSTM" class="col-lg-2 col-form-label">{{'CUSTOMER' | translate}}</label>
+               <div class="col-lg-9">
+                           <span id="inputCSTM" class="checkbox-inline" *ngFor="let item of customers" style="padding-right: 30px;display:inline-block;word-wrap:break-word;white-space:normal;">
+                               <input type="checkbox" name="customers" ng-model="user.cusGroup" value="{{item.code}}" (click)="selectCusCheckbox($event.target.checked,item.code)" [checked]="item.ifChecked=='checked'"> {{item.name}}
+                           </span>
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="inputCompany" class="col-lg-2 col-form-label">{{'COMPANY' | translate}}</label>
+               <div class="col-lg-9">
+                 <input type="text" [(ngModel)]="user.company" name="company" class="form-control" id="inputCompany" (change)="userCheckFun('company')" placeholder="{{'COMPANY' | translate}}"  maxlength="50" #companyControl="ngModel" >
+               </div>
+             </div>
+             <div class="form-group row">
+               <label for="inputAddress" class="col-lg-2 col-form-label">{{'ADDRESS' | translate}}</label>
+               <div class="col-lg-9">
+                 <input type="text" [(ngModel)]="user.address" name="address" class="form-control" id="inputAddress" (change)="userCheckFun('address')" placeholder="{{'ADDRESS' | translate}}"  maxlength="50" #addressControl="ngModel" >
+               </div>
+             </div>
+
+           </div>
+         </div>
+
+         <div class="form-group row">
+           <div class="offset-lg-3 col-lg-2" style=" margin-left: 35%;">
+             <button type="submit" [disabled]="!ngForm.form.valid || !user.img || !submitCheckFlag || !imgValid" class="btn" style="text-transform: none;background-color: #01b27c;font-size: 16px;">{{'USER_SUBMIT' | translate}}</button>
+           </div>
+           <div class="col-lg-2">
+             <button type="button" (click)="onclickCancel()" class="btn" style="text-transform: none;background-color: #888888;font-size: 16px;">{{'USER_CANCEL' | translate}}</button>
+           </div>
+         </div>
+       </form>
+     </nb-card-body>
+   </nb-card>
+ </div>
+</div>

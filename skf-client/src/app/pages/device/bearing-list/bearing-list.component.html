@@ -1,0 +1,72 @@
+<nb-card>
+  <nb-card-header>
+    {{'BEARING_TITTLE' | translate}}
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="search-bar" style="float: right; padding-bottom: 5px; padding-right: 21px;">
+      <button type="button" (click)="openAddPage()" class="btn" style="text-transform: none;background-color: #01b27c;font-size: 16px;">
+        <i class="glyphicon glyphicon-plus">
+        </i> {{'BEARING_ADD' | translate}}
+      </button>
+      <button type="button" (click)="onClicCancle()" class="btn" style="text-transform: none;background-color: #888888;font-size: 16px;">
+        <i class="glyphicon glyphicon-plus">
+        </i>{{'BEARING_RETURN' | translate}}
+      </button>
+    </div>
+    <div class="card-body">
+      <table class="table cus-table">
+        <thead>
+        <tr style="background-color: #dee2e6;">
+
+          <th scope="col">
+           <!-- <input type="checkbox"  (click)="checkedAll($event.target.checked)" [(ngModel)]="master">-->
+          </th>
+          <!-- <th scope="col">{{'BEARING_NAME' | translate}}</th>
+         <th scope="col">{{'BEARING_TYPE' | translate}}</th>-->
+         <th scope="col">{{'BEARING_NUM' | translate}}</th>
+         <th scope="col">{{'BEARING_FACTORY' | translate}}</th>
+         <th scope="col">{{'BEARING_DESCRIBE' | translate}}</th>
+         <th scope="col">{{'BEARING_BPFO_COEFFICIENT' | translate}}</th>
+         <th scope="col">{{'BEARING_BPFI_COEFFICIENT' | translate}}</th>
+         <th scope="col">{{'BEARING_BSF_COEFFICIENT' | translate}}</th>
+         <th scope="col">{{'BEARING_FTF_COEFFICIENT' | translate}}</th>
+         <th scope="col">{{'ACTION' | translate}}</th>
+       </tr>
+       </thead>
+       <tbody>
+
+       <ng-container *ngFor="let item of page.items; let ind = index">
+         <tr
+           class="alarm-info"
+           data-toggle="collapse"
+           data-target="#idcol0">
+           <td>
+              <div class="img_div_setting">
+                <img  class="img_setting"  id="imgUser" src="{{item.img}}">
+              </div>
+           </td>
+          <!-- <td>{{item.name}}</td>
+           <td>{{item.type}}</td>-->
+           <td>{{item.modelNumber}}</td>
+           <td>{{item.manufacture}}</td>
+           <td>{{item.description}}</td>
+           <td>{{item.bpfo}}</td>
+           <td>{{item.bpfi}}</td>
+           <td>{{item.bsf}}</td>
+           <td>{{item.fif}}</td>
+           <td>
+             <a class="ng2-smart-action ng2-smart-action-custom-custom nb-edit" href="#" (click)="onClickEdit(item)" style="color:#01b27c;font-size: 16px;"
+                  data-toggle="collapse" data-target="#idcol0">{{'BEARING_EDIT' | translate}}</a>
+             <a class="ng2-smart-action  ng2-smart-action-custom-custom nb-trash" style="color:#f55b63;font-size: 16px;"  href="#" (click)="onClickDelete(item)"
+                data-toggle="collapse" data-target="#idcol0">{{'BEARING_DELETE' | translate}}</a>
+           </td>
+         </tr>
+       </ng-container>
+       </tbody>
+     </table>
+     <pagination [totalPage]="page.allPageAmount" [currentPage]="page.currentPage-1"
+                 (pageChange)="pageChange($event)"></pagination>
+   </div>
+ </nb-card-body>
+</nb-card>

@@ -1,0 +1,10 @@
+<div class="login_bg">
+  <div class="login">
+
+    <div class="form_login">
+      <input type="text" value="" [(ngModel)]="username" placeholder='{{"LOGIN_ACCOUNT" | translate}}' class="userIcon">
+      <input type="password" value="" [(ngModel)]="password" placeholder='{{"PASSWORD" | translate}}' class="keyIcon">
+      <button type="button" (click)="loginClicked()">{{"LOGIN" | translate}}</button>
+    </div>
+  </div>
+</div>

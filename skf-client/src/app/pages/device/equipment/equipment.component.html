@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>{{equipment.code? ('EDIT_EQUIPMENT' | translate) : ('ADD_EQUIPMENT' | translate)}}</nb-card-header>
+      <nb-card-body>
+        <form #ngForm="ngForm" (ngSubmit)="submitEquipment()" novalidate role="form">
+          <div class="row">
+            <div class="col-lg-3 form-group">
+              <div class="row-center img-container3">
+                <img class="img-scale" id="imgEquipment">
+              </div>
+              <div class="row-center">
+                <div style="text-align: center">
+                  <label class="col-form-label">{{'PICTURE' | translate}}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <div class="form-group row">
+                <label for="inputName" class="col-lg-2 col-form-label">{{'DEVICE_NAME' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input type="text" [(ngModel)]="equipment.name" name="name" class="form-control" id="inputName" placeholder="{{'NAME_UNIQUE' | translate}}"
+                    (change)="changeName()" #nameControl="ngModel" required [ngClass]="!nameControl.touched? '' : nameControl.invalid || isDuplicated? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="inputCountry" class="col-lg-2 col-form-label">{{'EQUIPMENT_TYPE' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <div class="row full-name-inputs">
+                    <div class="col-sm-6 input-group">
+                      <select class="form-control" (change)="changeEquipmentType()" [(ngModel)]="equipment.equipmentTypeCode" name="equipmentTypeCode"
+                        id="equipmentTypeCode" #equipmentTypeCodeControl="ngModel" required [ngClass]="!equipmentTypeCodeControl.touched? '' : equipmentTypeCodeControl.invalid? 'form-control-danger' : 'form-control-success'">
+                        <option *ngFor="let item of equipmentTypes" [value]="item.code">{{item.name}}</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-6 input-group">
+                      <button type="button" (click)="manageType()" class="btn btn-success">{{'EQUIPMENT_TYPE_MANAGEMENT' | translate}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputSetupDate" class="col-lg-2 col-form-label">{{'EQUIPMENT_SETUP_DATE' | translate}}</label>
+                <div class="col-lg-9">
+                  <input type="date" [(ngModel)]="equipment.setupDate" name="setupDate" class="form-control" id="inputSetupDate" placeholder="{{'EQUIPMENT_SETUP_DATE' | translate}}"
+                    required #setupDateControl="ngModel" [ngClass]="!setupDateControl.touched? '' : setupDateControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-lg-3 col-lg-2">
+
+              <button type="submit" class="btn btn-success" [disabled]="!ngForm.form.valid || isSubmit">{{'SUBMIT' | translate}}</button>
+            </div>
+            <div class="col-lg-2">
+              <button type="button" (click)="cancel()" class="btn btn-cancle">{{'CANCEL' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

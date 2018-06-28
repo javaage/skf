@@ -1,0 +1,73 @@
+<div class="row full-screen">
+    <div class="col-lg-12 full-screen">
+        <nb-card class="full-screen">
+            <nb-card-header>
+                <div class="row">
+                    <div class="col-lg-6" style="display: flex; align-items: center;">
+                        <span class="middle margin-left-1 min-width-600">{{'EQUIPMENT_TYPE_MANAGEMENT' | translate}}</span>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="full-width align-center right">
+                            <button (click)="goBack()" class="btn btn-cancle">{{'BACK' | translate}}</button>
+                            <button (click)="add()" class="btn btn-success" style="margin-left: 10px;margin-right: 10px;">{{'ADD_EQUIPMENT_TYPE' | translate}}</button>
+
+                        </div>
+                    </div>
+                </div>
+            </nb-card-header>
+            <nb-card-body>
+                <table *ngIf="listEquipmentType.length" class="table table-striped" [mfData]="listEquipmentType" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
+                    [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+                    <thead class="normal-color">
+                        <tr>
+                            <th style="width: 20%;text-align: center;">
+                                {{'EQUIPMENT_PICTURE' | translate}}
+                            </th>
+                            <th style="width: 20%">
+                                <mfDefaultSorter by="name">{{'EQUIPMENT_TYPE_NAME' | translate}}</mfDefaultSorter>
+                                <span *ngIf="sortOrder=='desc' && sortBy=='name'" class="icon nb-arrow-dropdown"></span>
+                                <span *ngIf="sortOrder=='asc' && sortBy=='name'" class="icon nb-arrow-dropup"></span>
+                            </th>
+                            <th style="width: 40%">
+                                <mfDefaultSorter by="description">{{'EQUIPMENT_TYPE_DESCRIPTION' | translate}}</mfDefaultSorter>
+                                <span *ngIf="sortOrder=='desc' && sortBy=='description'" class="icon nb-arrow-dropdown"></span>
+                                <span *ngIf="sortOrder=='asc' && sortBy=='description'" class="icon nb-arrow-dropup"></span>
+                            </th>
+                            <th style="width: 20%">
+                                {{'ACTION' | translate}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of mf.data" style="vertical-align: middle;">
+                            <td style="text-align: center;">
+                                <img class="img-panel" [src]="item.img"> </td>
+                            <td style="vertical-align: middle;">{{item.name}}</td>
+                            <td style="vertical-align: middle;">{{item.description}}</td>
+                            <td style="vertical-align: middle;">
+                                <a (click)="edit(item)" class="pointer" *ngIf="userRoleId==1">
+                                    <span class="icon nb-edit">{{'EDIT' | translate}}</span>
+                                </a>
+                                <a (click)="delete(item)" class="pointer" *ngIf="userRoleId==1">
+                                    <span class="icon nb-trash">{{'DELETE' | translate}}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <mfBootstrapPaginator></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div *ngIf="!listEquipmentType.length">{{'NO_DATA_FOUND' | translate}}</div>
+                <!--
+             <ng2-smart-table [settings]="settings" [source]="listEquipmentType" (deleteConfirm)="onDeleteConfirm($event)" >
+            </ng2-smart-table>
+            -->
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

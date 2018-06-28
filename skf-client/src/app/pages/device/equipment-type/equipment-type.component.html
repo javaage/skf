@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>{{equipmentType.code? ('EDIT_EQUIPMENT_TYPE' | translate) : ('ADD_EQUIPMENT_TYPE' | translate)}}</nb-card-header>
+      <nb-card-body>
+        <form #ngForm="ngForm" novalidate role="form" (submit)="submitEquipmentType()">
+          <div class="row">
+            <div class="col-lg-3 form-group">
+              <div class="row-center img-container3" [ngClass]="imgValid? '':'border-danger'">
+                <img class="img-scale" style="cursor: pointer;" id="imgEquipmentType" (click)="chooseFile()">
+              </div>
+              <div class="row-center" style="cursor: pointer;" (click)="chooseFile()">
+                <span class="menu-icon nb-plus" style="margin-top: 50px;font-size: 2rem;" *ngIf="!equipmentType.img"></span>
+                <span class="menu-icon nb-edit" style="font-size: 2rem;" *ngIf="equipmentType.img"></span>
+                <input type="file" #file id="file" (change)="getFilePath()" accept="image/jpg,image.png" style="filter:alpha(opacity=0);opacity:0;width: 0;height: 0;"
+                />
+              </div>
+              <div class="row-center">
+                <div style="text-align: center">
+                  <label class="col-form-label">{{'PICTURE' | translate}}
+                    <span class="danger"> * </span>
+                    <br>
+                    <span> (L : H &lt; 8; size &lt; 2M) </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <div class="form-group row">
+                <label for="inputName" class="col-lg-2 col-form-label">{{'NAME' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input type="text" [(ngModel)]="equipmentType.name" name="name" class="form-control" id="inputName" placeholder="{{'NAME_UNIQUE' | translate}}"
+                    (change)="changeName()" #nameControl="ngModel" required [ngClass]="!nameControl.touched? '' : nameControl.invalid || isDuplicated? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputDescription" class="col-lg-2 col-form-label">{{'DESCRIPTION' | translate}}
+                  <span class="danger"> * </span>
+                </label>
+                <div class="col-lg-9">
+                  <input type="text" [(ngModel)]="equipmentType.description" name="description" class="form-control" id="inputDescription"
+                    placeholder="{{'DESCRIPTION' | translate}}" required maxlength="50" #descriptionControl="ngModel" [ngClass]="!descriptionControl.touched? '' : descriptionControl.invalid? 'form-control-danger' : 'form-control-success'">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-lg-3 col-lg-2">
+              <button type="submit" class="btn btn-success" [disabled]="!ngForm.form.valid || !equipmentType.img || isSubmit || !imgValid">{{'SUBMIT' | translate}}</button>
+            </div>
+            <div class="col-lg-2">
+              <button type="button" (click)="cancel()" class="btn btn-cancle">{{'CANCEL' | translate}}</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

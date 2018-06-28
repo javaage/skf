@@ -1,0 +1,236 @@
+<div id="accordion" style="font-family: Roboto;">
+  <ng-container *ngFor="let subList of alarmTotalOptions">
+    <div class="card">
+      <div class="card-header {{subList.status}}" (click)="onClickAlarmTab(subList)" data-toggle="collapse" data-target="#collapseId">
+        <h5 class="mb-0 cus-head">
+          <div class="header-label">
+            <span>{{subList.name | translate}}</span>
+            <div class="process-total">{{subList.total}}</div>
+          </div>
+          <div [ngClass]="{'spreadState': (isCollapse == false) && (subList.id == currentAlarmTab.id)}" class="collapsedState"></div>
+        </h5>
+      </div>
+
+      <ng-container *ngIf="subList.id == currentAlarmTab.id">
+        <div id="collapseId" class="collapse" data-parent="#accordion">
+          <div class="card-body">
+            <div class="search-bar">
+              <div class="dropdown custom-dropdown-filter">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="firstDropdownMenu" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <span *ngIf="deviceDropDownOptions.length > 0">{{currentDeviceFilter.name}}</span>
+                </button>
+                <div class="dropdown-menu blackColor" aria-labelledby="firstDropdownMenu">
+                  <a class="dropdown-item" *ngFor="let item of deviceDropDownOptions" (click)="onDeviceChange(item)">{{item.name}}</a>
+                </div>
+              </div>
+              <div class="dropdown custom-dropdown-filter">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="seconddropdownMenu" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <span *ngIf="deviceDropDownOptions.length > 0">{{currentSensorFilter.name}}</span>
+                </button>
+                <div class="dropdown-menu blackColor" aria-labelledby="seconddropdownMenu">
+                  <a class="dropdown-item" *ngFor="let item of sensorDropDownOptions" (click)="onSensorChange(item)">{{item.name}}</a>
+                </div>
+              </div>
+              <div class="dropdown custom-dropdown-filter">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="thirddropdownMenu" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  <span *ngIf="deviceDropDownOptions.length > 0">{{currentStatusFilter.name}}</span>
+                </button>
+                <div class="dropdown-menu blackColor" aria-labelledby="thirddropdownMenu">
+                  <a class="dropdown-item" *ngFor="let item of statusDropDownOptions" (click)="onStatusChange(item)">{{item.name}}</a>
+                </div>
+              </div>
+              <div class="custom-time-filter">
+                <label>{{'ALARM_SEARCH_BAR_TIME_LABEL' | translate}}</label>
+                <input type="date" name="filterStartTime" [(ngModel)]="filterStartTime">
+                <span>--</span>
+                <input type="date" name="filterEndTime" [(ngModel)]="filterEndTime">
+              </div>
+              <div class="custom-score-filter">
+                <label>{{'ALARM_SEARCH_BAR_SCORE_LABEL' | translate}}</label>
+                <input type="number" min="0" name="filterStartScore" [(ngModel)]="filterStartScore">
+                <span>--</span>
+                <input type="number" min="0" name="filterEndScore" [(ngModel)]="filterEndScore">
+              </div>
+              <div class="submit-filter">
+                <button type="button" class="btn btn-warning" (click)="onTableFilterSubmit()">
+                  {{'ALARM_SEARCH_BAR_SUBMIT_BUTTON' | translate}}
+                </button>
+              </div>
+            </div>
+
+            <table class="table cus-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{'ALARM_TABLE_TH1' | translate}}</th>
+                  <th scope="col">{{'ALARM_TABLE_TH2' | translate}}</th>
+                  <th scope="col">{{'ALARM_TABLE_TH3' | translate}}</th>
+                  <!--<th scope="col">{{'ALARM_TABLE_TH7' | translate}}</th>-->
+                  <th class="row-sort" scope="col" (click)="onClickSort('status')">
+                    <span>{{'ALARM_TABLE_TH4' | translate}}</span>
+                    <div class="sort-mark" [ngClass]="{'active-sort-up': (currentSortRowType == 'status') && (isSortByAsc == true),
+                                   'active-sort-down': (currentSortRowType == 'status') && (isSortByAsc == false)}">
+                    </div>
+                  </th>
+                  <th class="row-sort" scope="col" (click)="onClickSort('score')">
+                    <span>{{'ALARM_TABLE_TH5' | translate}}</span>
+                    <div class="sort-mark" [ngClass]="{'active-sort-up': (currentSortRowType == 'score') && (isSortByAsc == true),
+                                   'active-sort-down': (currentSortRowType == 'score') && (isSortByAsc == false)}"></div>
+                  </th>
+                  <th class="row-sort" scope="col" (click)="onClickSort('alarmTime')">
+                    <span>{{'ALARM_TABLE_TH6' | translate}}</span>
+                    <div class="sort-mark" [ngClass]="{'active-sort-up': (currentSortRowType == 'alarmTime') && (isSortByAsc == true),
+                                   'active-sort-down': (currentSortRowType == 'alarmTime') && (isSortByAsc == false)}"></div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of tableLists; let ind = index">
+                  <tr (click)="onClickTableRow(item)" class="alarm-info" data-toggle="collapse" data-target="#idcol0">
+                    <th scope="row">{{item.deviceName}}</th>
+                    <td>{{item.sensorName}}</td>
+                    <td>{{item.partName}}</td>
+                    <!--<td>{{item.typeValue}}</td>-->
+                    <td>{{item.status}}</td>
+                    <td>{{item.score}}</td>
+                    <td>{{item.alarmTime}}</td>
+                  </tr>
+
+                  <!-- Alarm详情 -->
+                  <tr class="alarm-detail-panel" *ngIf="item.id == this.currentTableRow.id">
+                    <th colspan="7">
+                      <div id="idcol0" class="collapse" data-parent="#collapseId">
+                        <div class="card-body cus-body">
+                          <div class="descAlarm">
+                            <label>{{'ALARM_DETAIL_PANEL_DESCRIBE' | translate}}:</label>
+                            <p>{{alarmDetailInfo.descriptionMsg}}</p>
+                          </div>
+                          <div class="searchByDate">
+                            <div class="min-val-filter">
+                              <label>{{'ALARM_DETAIL_PANEL_THRESHOLD_VALUE' | translate}}:</label>
+                              <input type="number" min="0" [(ngModel)]="thresholdValue">
+                            </div>
+                            <div class="chart-time-filter">
+                              <label>{{'ALARM_DETAIL_PANEL_TIME' | translate}}</label>
+                              <input type="date" id="chartStartTime" name="chartStartTime" [(ngModel)]="chartStartTime">
+                              <span>--</span>
+                              <input type="date" id="chartEndTime" name="chartEndTime" [(ngModel)]="chartEndTime">
+                            </div>
+                            <button type="button" class="btn btn-warning" (click)="onClickLineChartSearch()">
+                              {{'ALARM_DETAIL_PANEL_SEARCH_BUTTON' | translate}}
+                            </button>
+                          </div>
+
+                          <div class="topChart" echarts [options]="lineChartOptions" (chartClick)="onlineChartClick($event)" (chartInit)="onChartInit($event, 'line')"></div>
+                          <div class="bottomChartPanel">
+                            <div class="headTab">
+                              <div class="sub-tab" *ngFor="let item of spectrogramTabOptions" (click)="onClickSpectrogramTab(item)" [ngClass]="{'activeTab': currentSpectrogramTab.id == item.id}">
+                                <a>{{item.name | translate}}</a>
+                              </div>
+                            </div>
+                            <div class="bottomChart" echarts [options]="spectrogramOptions" (chartInit)="onChartInit($event, 'spectrogram')"></div>
+                          </div>
+                          <div *ngIf="currentAlarmTab.id == 1" class="process-btn">
+                            <button type="button" class="btn btn-success btn-sm no-transform" (click)="onClickProcessBtn()">
+                              {{'ALARM_DETAIL_PANEL_DONE_BUTTON' | translate}}
+                            </button>
+                          </div>
+                          <!--<div *ngIf="currentAlarmTab.id != 3">-->
+                          <div>
+                            <div *ngIf="currentAlarmTab.id == 2" class="add-notes">
+                              <div class="note-title">
+                                <span>{{'ALARM_ADD_NOTES' | translate}}</span>
+                              </div>
+                              <div class="note-edit">
+                                <label>{{'ALARM_NOTES' | translate}}</label>
+                                <textarea rows="2" [(ngModel)]="noteMessage"></textarea>
+                              </div>
+                              <div class="note-btn">
+                                <button type="button" class="btn btn-success no-transform" (click)="onClickNoteYesBtn()">
+                                  {{'ALARM_NOTES_OK' | translate}}
+                                </button>
+                                <button type="button" class="btn btn-success no-transform btn-cancle" (click)="onClickNoteNoBtn()">
+                                  {{'ALARM_NOTES_CANCEL' |translate}}
+                                </button>
+                              </div>
+                            </div>
+                            <div class="notes-list">
+                              <div class="list-item" *ngFor="let item of notesList">
+                                <img src="{{item.avator}}" />
+                                <div class="item-detail">
+                                  <div class="note-create-info">
+                                    <span>{{item.userName}}</span>
+                                    <span>{{'ALARM_DETAIL_PANEL_RELEASE' | translate}} {{item.releaseTime}}</span>
+                                  </div>
+                                  <div>{{'ALARM_DETAIL_PANEL_DESCRIBE' | translate}}：{{item.description}}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div *ngIf="currentAlarmTab.id == 2" class="stop-process-btn">
+                              <button type="button" class="btn btn-danger btn-sm no-transform" data-toggle="modal" data-target="#dangerLevelModalCenter">
+                                {{'ALARM_DETAIL_PANEL_DANGER_LEVEL_BUTTON' | translate}}
+                              </button>
+                              <button type="button" class="btn btn-danger btn-sm no-transform" (click)="onClickStopProcessBtn()">
+                                {{'ALARM_DETAIL_PANEL_TRE_BUTTON' | translate}}
+                              </button>
+                            </div>
+                          </div>
+                          <div *ngIf="currentAlarmTab.id == 3" class="processed-btn-group">
+                            <button type="button" class="btn btn-danger btn-sm no-transform" (click)="onClickReProcessBtn()">
+                              {{'ALARM_DETAIL_PANEL_REHANDLE_BUTTON' | translate}}
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm no-transform" data-toggle="modal" data-target="#dangerLevelModalCenter">
+                              {{'ALARM_DETAIL_PANEL_DANGER_LEVEL_BUTTON' | translate}}
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm no-transform" (click)="onClickProcessedDelBtn()">
+                              {{'ALARM_DETAIL_PANEL_DELETE_BUTTON' | translate}}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+
+            <pagination [totalPage]="totalPageNum" [currentPage]="currentPageNum" (pageChange)="pageChange($event)"></pagination>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="dangerLevelModalCenter" tabindex="-1" role="dialog" aria-labelledby="dangerLevelModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dangerLevelModalCenterTitle">{{'ALARM_DANGER_LEVEL_POP1_TITLE' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span>{{'ALARM_DANGER_LEVEL_POP1_BODY1' | translate}}</span>
+        <span>{{alarmDetailInfo.dangerLevel}}</span>
+        <span>{{'ALARM_DANGER_LEVEL_POP1_BODY2' | translate}}</span>
+        <span>{{alarmDetailInfo.dangerAmountLevel}}</span>
+        <br>
+        <span>{{'ALARM_DANGER_LEVEL_POP1_BODY3' | translate}}</span>
+        <input type="number" min="0" style="width: 60px;" [ngClass]="{'has-error': dangerLevelOpts.dangerLevel.flag == false}" [(ngModel)]="dangerLevel">
+        <span>{{'ALARM_DANGER_LEVEL_POP1_BODY4' | translate}}</span>
+        <input type="number" min="0" style="width: 60px;" [ngClass]="{'has-error': dangerLevelOpts.dangerAmountLevel.flag == false}"
+          [(ngModel)]="dangerAmountLevel">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success no-transform btn-cancle" data-dismiss="modal">{{'ALARM_DANGER_LEVEL_POP1_CANCEL_BTN' | translate}}</button>
+        <button type="button" class="btn btn-success no-transform" (click)="saveAlarmDangerLevel()">{{'ALARM_DANGER_LEVEL_POP1_OK_BTN' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

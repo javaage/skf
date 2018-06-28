@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "name": "ALARM_UNPROCESSED_TAB",
+    "status": "unprocessed",
+    "total": 32
+  },
+  {
+    "id": 1,
+    "name": "ALARM_PROCESSING_TAB",
+    "status": "processing",
+    "total": 28
+  },
+  {
+    "id": 2,
+    "name": "ALARM_PROCESSED_TAB",
+    "status": "processed",
+    "total": 11
+  }
+]

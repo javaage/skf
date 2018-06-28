@@ -1,0 +1,80 @@
+{
+  "device": [
+    {
+      "id": "0",
+      "name": "All",
+      "data": [
+        {
+          "id": "10",
+          "name": "All"
+        },
+        {
+          "id": "11",
+          "name": "Sensor111"
+        },
+        {
+          "id": "12",
+          "name": "Sensor112"
+        },
+        {
+          "id": "13",
+          "name": "Sensor213"
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "name": "Device1",
+      "data": [
+        {
+          "id": "20",
+          "name": "All"
+        },
+        {
+          "id": "11",
+          "name": "Sensor111"
+        },
+        {
+          "id": "12",
+          "name": "Sensor112"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Device2",
+      "data": [
+        {
+          "id": "30",
+          "name": "All"
+        },
+        {
+          "id": "13",
+          "name": "Sensor213"
+        }
+      ]
+    }
+  ],
+  "status": [
+    {
+      "id": "0",
+      "name": "All"
+    },
+    {
+      "id": "1",
+      "name": "A"
+    },
+    {
+      "id": "2",
+      "name": "B"
+    },
+    {
+      "id": "3",
+      "name": "C"
+    },
+    {
+      "id": "4",
+      "name": "D"
+    }
+  ]
+}

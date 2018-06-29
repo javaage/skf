@@ -1,0 +1,5 @@
+def method_test():
+    return "method test"
+
+if __name__ == "__main__":
+    print('main')
